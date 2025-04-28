@@ -19,6 +19,7 @@ app.post('/reservar' , (req,res) => {
   dia = req.query.dia; // Dia seleccionado
   horario = req.query.horario; // Horario seleccionado 
   cancha = req.query.cancha; // Cancha seleccionada
+  //TODO AGREGAR LOS DATOS A LA RESERVA
   if (!dia || !horario || !cancha) {
     return res.status(400).json({ error: "Faltan parámetros 'dia', 'horario' o 'cancha'" });
   }else{
@@ -43,6 +44,8 @@ app.post('/reservar' , (req,res) => {
 
 
 });
+//TODO hacer endpoint eliminar
+app.post('/eliminar_reserva', (req, res) => {});
 
 
 /*Endopoint para traer los horarios disponibles de la cancha seleccionada*/

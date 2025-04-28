@@ -16,11 +16,17 @@
     margin-right: 1rem;
     white-space: nowrap;
 }
+.btn-confirmar{
+    background-color: #BBE67D;
+}
 
 .form-group {
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+#hidden {
+    display: none;
 }
 
 input[type="date"],
