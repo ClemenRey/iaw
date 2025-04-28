@@ -10,21 +10,35 @@ app.use(cors()); // habilita todas las solicitudes desde cualquier origen
 
 
 app.use(express.json());
-
-/*Arreglos de 10 lugares, cada lugar representa un turno posible. Durante el día hay 10 turnos
-Turno 1 --> 8 - 9:30 
-Turno 2 --> 9:30 - 10
-etc
-*/ 
-let cancha_1 = new Array(10).fill(0);
-let cancha_2 = new Array(10).fill(0);
-let cancha_3 = new Array(10).fill(0);
-
-
+ 
+let fechas = new Map();
+let reservas = new Map();
 
 /*Endpoint que responde a la reserva de un turno*/ 
-app.post('/reservar' , (req,rest) => {
-
+app.post('/reservar' , (req,res) => {
+  dia = req.query.dia; // Dia seleccionado
+  horario = req.query.horario; // Horario seleccionado 
+  cancha = req.query.cancha; // Cancha seleccionada
+  if (!dia || !horario || !cancha) {
+    return res.status(400).json({ error: "Faltan parámetros 'dia', 'horario' o 'cancha'" });
+  }else{
+    if(fechas.has(dia)){
+      if(fechas.get(dia)[horario][cancha]){ // Si la cancha seleccionada está disponible
+        fechas.get(dia)[horario][cancha] = false; // La cancha ya no está disponible
+        let codigo = Math.floor(Math.random() * 1000); // Genero un código aleatorio para la reserva
+        while(reservas.has(codigo)){ // Si el código ya existe, genero otro
+          codigo = Math.floor(Math.random() * 1000);
+        }
+        console.log("el codigo es: " + codigo); // no sacar porque sino sale undefined xdxd
+        let reserva = {cancha: cancha, 
+                       dia: dia,
+                       horario: horario}; // Creo la reserva
+        reservas.set(codigo, reserva); // Agrego la reserva al mapa de reservas
+        res.json({ mensaje: "Reserva realizada con éxito" 
+                , codigo: codigo}); // Devuelvo el código de la reserva 
+      }
+    }
+  }
 /*Agregar la reserva al arreglo*/
 
 
@@ -32,13 +46,19 @@ app.post('/reservar' , (req,rest) => {
 
 
 /*Endopoint para traer los horarios disponibles de la cancha seleccionada*/
-app.post('/horarios_disponibles' , (req,res) => {
-
-    console.log("Entré a horarios_disponibles");
-    const cancha = req.body.cancha; // Obtengo la cancha como un string
-    res.json(cancha_1); // Devuelvo el arreglo booleano de la cancha 1
-    
-
+app.get('/canchas_disponibles' , (req,res) => {
+    dia = req.query.dia; // Dia seleccionado
+    horario = req.query.horario; // Horario seleccionado
+    if (!dia || !horario) {
+      return res.status(400).json({ error: "Faltan parámetros 'dia' o 'horario'" });
+    }
+    if(!fechas.has(dia)){ // Si el dia no existe en el mapa, lo seteo todo disponible
+        fechas.set(dia, new Array(10).fill(new Array(3).fill(true)));
+        res.json(fechas.get(dia)[horario]);
+    }
+    else{ // Si el dia existe, devuelvo el arreglo de la fecha seleccionada
+        res.json(fechas.get(dia)[horario]);
+    }
 
 });
 
