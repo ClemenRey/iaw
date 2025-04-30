@@ -10,6 +10,12 @@
     margin: 0 auto;
 }
 
+#aclaracion {
+
+    font-size : 0.75rem;
+
+}
+
 .label {
     font-size: 1rem;
     font-weight: bold;

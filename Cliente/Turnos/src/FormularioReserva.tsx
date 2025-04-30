@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import './FormularioReserva.css';
+import  AlertaReserva from './AlertaReserva';
 
 
 function FormularioReserva() {
+
     const [cancha, setCancha] = useState("");
     const [canchasDisponibles, setCanchaDisponibles] = useState([]);
     const [horario, setHorario] = useState("");
@@ -12,11 +14,60 @@ function FormularioReserva() {
     const [dni, setDni] = useState("");
     const [telefono, setTelefono] = useState("");
     const [visilidadInputs, setVisibilidadInputs] = useState("hidden");
+    const [mostrarAlerta , setMostrarAlerta] = useState(false);
+    const [mensaje , setMensaje] = useState("");
+    const [exito, setExito] = useState(false);
+    const [botonDeshabilitado , setBotonDeshabilitado] = useState(true);
+   
+
     const [visilidadConfirmar, setVisibilidadConfirmar] = useState("hidden");
     const [visibilidadCanchas, setVisibilidadCanchas] = useState("hidden");
     const [visibilidadReservar, setVisibilidadReservar] = useState("hidden");
     
-    function consultarCanchas() {
+
+   
+   
+    /*useEffect(() => {
+
+        alert("Entré a useEffect de botón confirmar")    
+        if (dia != "" && horario != "" && cancha != "") setFormularioValido(true);
+
+    } , [dia,horario,cancha]);*/
+   
+    useEffect (() => {
+
+            
+            if (dia != "" && horario != "") {
+
+            fetch('http://localhost:3001/canchas_disponibles' , {
+
+                method : 'POST',
+                headers: {'Content-type' : 'application/json'},
+                body: JSON.stringify({
+                    dia : dia,
+                    horario : horario
+                  }),
+
+
+            }).then(res => res.json())
+            .then(data => {
+
+
+                setCanchaDisponibles(data);
+                setVisibilidadCanchas("visible");
+                setVisibilidadReservar("visible");
+                
+            }); // Me convierte a objeto de JavaScript la respuesta
+
+        }
+
+    } , [dia, horario]);
+
+
+
+
+
+    /*function consultarCanchas() {
         if(dia === "" || horario === ""){
             return
         }else{
@@ -38,7 +89,9 @@ function FormularioReserva() {
             setVisibilidadCanchas("visible");
             setVisibilidadReservar("visible");
         }
-    }
+    }*/
+
+
     function realizarReserva() {
         if (nombre === "" || dni === "" || telefono === "") {
             setVisibilidadInputs("visible");
@@ -48,21 +101,50 @@ function FormularioReserva() {
             setVisibilidadConfirmar("visible");
         }
     }
+
     function confirmarReserva() {
-        const url = new URL('http://localhost:3001/reservar');
-        url.searchParams.append('dia', dia);
-        url.searchParams.append('horario', horario);
-        url.searchParams.append('cancha', cancha);
-        let turno = Number(horario)+1
-        let canchaSeleccionada = Number(cancha)+1
-        fetch(url.toString() , {
+
+        fetch('http://localhost:3001/reservar' , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-        }).then(res => res.json())
+
+            body: JSON.stringify({
+                dia : dia,
+                horario : horario,
+                cancha : cancha
+              })
+        }).then(res => {
+
+            const data = res.json();
+            if (!res.ok) {throw new Error("Error en la reserva")}
+            return data;    
+        
+        })
             //TODO: MOSTRAR CONFIRMACION DE RESERVA
-            .then(data => {console.log(data)})
+            .then(data => {
+                
+                console.log(data); //Reserva realizada con éxito
+                
+                setMensaje(`${data.mensaje}. Su código de reserva es  ${data.codigo} . Puede consultar su reserva haciendo click en Consultar mi reserva`);
+                setExito(true);
+                setMostrarAlerta(true);
+                //Resetear los campos y deshabilitar el botón de confirmar
+                setDia("");
+                setHorario("");
+                setCancha("");
+                setBotonDeshabilitado(true);
+
+            })
+            .catch(() => {
+
+                setMensaje(`No pudo realizarse la reserva. Complete todos los campos`);
+                setExito(false);
+                setMostrarAlerta(true);
+
+            });
+            
         
 
     }
@@ -76,6 +158,7 @@ function FormularioReserva() {
         return `${year}-${month}-${day}`;
     };
     return (
+        <>
         <div className="contenedor-formulario">
             <div className="form-group">
                 <label className="label">Fecha: </label>
@@ -83,68 +166,92 @@ function FormularioReserva() {
                     type="date"
                     value={dia}
                     min={obtenerFechaHoy()} // Establecer la fecha mínima como hoy
-                    onChange={(e) => setDia(e.target.value)} 
+                    onChange={
+                        
+                        (e) => {
+                        setDia(e.target.value); 
+                        if (e.target.value != "" && horario != "" && cancha != "") setBotonDeshabilitado(false); 
+                    
+                    }}
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="horario" className="label">Seleccionar Horario:</label>
+                <label htmlFor="horario" className="label">Horario:</label>
                 <select 
                     id="horario" 
                     value={horario}
-                    onChange={(e) => setHorario(e.target.value)}
+                    onChange={(e) => {
+
+                        setHorario(e.target.value);
+                        if (dia != "" && e.target.value != "" && cancha != "") setBotonDeshabilitado(false); 
+                    
+                    }}
                 >
-                    <option value="">-- Elige un horario --</option>
-                    <option value="0">turno 1 - 9:00</option>
-                    <option value="1">turno 2 - 10:30</option>
-                    <option value="2">turno 3 - 12:00</option>
-                    <option value="3">turno 4 - 13:30</option>
-                    <option value="4">turno 5 - 15:00</option>
-                    <option value="5">turno 6 - 16:30</option>
-                    <option value="6">turno 7 - 18:00</option>
-                    <option value="7">turno 8 - 19:30</option>
-                    <option value="8">turno 9 - 21:00</option>
-                    <option value="9">turno 10 - 22:30</option>
+                    <option value="">Seleccionar horario</option>
+                    <option value="0">Turno 1 - 9:00</option>
+                    <option value="1">Turno 2 - 10:30</option>
+                    <option value="2">Turno 3 - 12:00</option>
+                    <option value="3">Turno 4 - 13:30</option>
+                    <option value="4">Turno 5 - 15:00</option>T                    <option value="5">Turno 6 - 16:30</option>
+                    <option value="6">Turno 7 - 18:00</option>
+                    <option value="7">Turno 8 - 19:30</option>
+                    <option value="8">Turno 9 - 21:00</option>
+                    <option value="9">Turno 10 - 22:30</option>
                 </select>
             </div>
-            <div className='form-group'>
-                <button onClick={consultarCanchas}>Consultar</button>
-            </div>
-            <div className="form-group" id={visibilidadCanchas}>
+           
+            <div className="form-group">
                 <label htmlFor="cancha" className="label">Seleccionar Cancha:</label>
                 <select id="cancha"
                         value={cancha}
-                        onChange={(e) => setCancha(e.target.value)}>
-                    <option value="">-- Elige una cancha --</option>
+                        onChange={
+
+                            (e) => {
+
+                                setCancha(e.target.value);
+                                if (dia != "" && horario != "" && e.target.value != "") setBotonDeshabilitado(false);
+
+                            }}>
+                    <option value="">Seleccionar cancha</option>
                     {canchasDisponibles.map((disponible, index) => (
-                        disponible?<option key={index} value={index}>cancha {index+1}</option>:null
+                        disponible?<option key={index} value={index}>Cancha {index+1}</option>:null
                     ))}
                     
                 </select>
             </div>
+            <label id ="aclaracion">*Las canchas que aparecen son aquellas disponibles para la hora y fecha elegidas</label>
             <div className="form-group" id={visilidadInputs}>
-                <label >ingrese su nombre: </label>
+                <label >Ingrese su nombre: </label>
                 <input type="text" value={nombre} onChange={(e)=>{setNombre(e.target.value)}}></input>
             </div>
             <div className="form-group" id={visilidadInputs}>
-                <label>ingrese su DNI: </label>
+                <label>Ingrese su DNI: </label>
                 <input type="text" value={dni} onChange={(e)=>{setDni(e.target.value)}}></input>
             </div>
             <div className="form-group" id={visilidadInputs}>
-                <label>ingrese su telefono: </label>
+                <label>Ingrese su telefono: </label>
                 <input type="text"value={telefono} onChange={(e)=>{setTelefono(e.target.value)}}></input>
             </div>
             <div className="form-group">
-                <button
-                    id={visibilidadReservar}
-                    onClick={realizarReserva}    
-                >Reservar</button>
-                <button 
+            
+            </div>
+            <button 
+
+                    disabled = {botonDeshabilitado}
                     className="btn-confirmar"
-                    id ={visilidadConfirmar}
                     onClick={confirmarReserva}
                 > Confirmar reserva</button>
-            </div>
         </div>
+
+        { mostrarAlerta && <AlertaReserva
+        mensaje={mensaje}
+        exito={exito}
+        onClose={() => setMostrarAlerta(false)}   
+
+        />  }
+        
+        </>
+                     
     );
 }
 
