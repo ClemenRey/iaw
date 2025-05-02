@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import './FormularioReserva.css';
 import  AlertaReserva from './AlertaReserva';
+import PanelConsultaReserva from './PanelConsultaReserva';
+
 
 
 function FormularioReserva() {
@@ -18,6 +20,13 @@ function FormularioReserva() {
     const [mensaje , setMensaje] = useState("");
     const [exito, setExito] = useState(false);
     const [botonDeshabilitado , setBotonDeshabilitado] = useState(true);
+    const [canchaDeshabilitado , setCanchaDeshabilitado] = useState(false);
+    const [fechaDeshabilitada , setFechaDeshabilitada] = useState(false);
+    const [horarioDeshabilitado, setHorarioDeshabilitado] = useState(false);
+    const [nombreYapellidoDeshabilitado, setNombreYApellidoDeshabilitado] = useState(false);
+    const [dniDeshabilitado, setDNIdeshabilitado] = useState(false);
+    const [telefonoDeshabilitado , setTelefonoDeshabilitado] = useState(false);
+    const [consultarReserva , setConsultarReserva] = useState(false);
    
 
     const [visilidadConfirmar, setVisibilidadConfirmar] = useState("hidden");
@@ -25,14 +34,7 @@ function FormularioReserva() {
     const [visibilidadReservar, setVisibilidadReservar] = useState("hidden");
     
 
-   
-   
-    /*useEffect(() => {
 
-        alert("Entré a useEffect de botón confirmar")    
-        if (dia != "" && horario != "" && cancha != "") setFormularioValido(true);
-
-    } , [dia,horario,cancha]);*/
    
     useEffect (() => {
 
@@ -113,7 +115,11 @@ function FormularioReserva() {
             body: JSON.stringify({
                 dia : dia,
                 horario : horario,
-                cancha : cancha
+                cancha : cancha,
+                nombreYapellido : nombre,
+                dni : dni,
+                telefono : telefono,
+
               })
         }).then(res => {
 
@@ -127,7 +133,7 @@ function FormularioReserva() {
                 
                 console.log(data); //Reserva realizada con éxito
                 
-                setMensaje(`${data.mensaje}. Su código de reserva es  ${data.codigo} . Puede consultar su reserva haciendo click en Consultar mi reserva`);
+                setMensaje(`${data.mensaje}.Puede consultar su reserva haciendo click en Consultar mi reserva`);
                 setExito(true);
                 setMostrarAlerta(true);
                 //Resetear los campos y deshabilitar el botón de confirmar
@@ -135,6 +141,12 @@ function FormularioReserva() {
                 setHorario("");
                 setCancha("");
                 setBotonDeshabilitado(true);
+                setCanchaDeshabilitado(true);
+                setFechaDeshabilitada(true);
+                setHorarioDeshabilitado(true);
+                setNombreYApellidoDeshabilitado(true);
+                setDNIdeshabilitado(true);
+                setTelefonoDeshabilitado(true);
 
             })
             .catch(() => {
@@ -165,12 +177,14 @@ function FormularioReserva() {
                 <input 
                     type="date"
                     value={dia}
+                    disabled = {fechaDeshabilitada}
                     min={obtenerFechaHoy()} // Establecer la fecha mínima como hoy
                     onChange={
                         
                         (e) => {
                         setDia(e.target.value); 
-                        if (e.target.value != "" && horario != "" && cancha != "") setBotonDeshabilitado(false); 
+                        if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") setBotonDeshabilitado(false);
+
                     
                     }}
                 />
@@ -180,10 +194,12 @@ function FormularioReserva() {
                 <select 
                     id="horario" 
                     value={horario}
+                    disabled = {horarioDeshabilitado}
                     onChange={(e) => {
 
                         setHorario(e.target.value);
-                        if (dia != "" && e.target.value != "" && cancha != "") setBotonDeshabilitado(false); 
+                        if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") setBotonDeshabilitado(false);
+
                     
                     }}
                 >
@@ -201,15 +217,16 @@ function FormularioReserva() {
             </div>
            
             <div className="form-group">
-                <label htmlFor="cancha" className="label">Seleccionar Cancha:</label>
+                <label htmlFor="cancha" className="label" >Seleccionar Cancha:</label>
                 <select id="cancha"
                         value={cancha}
+                        disabled = {canchaDeshabilitado}
                         onChange={
 
                             (e) => {
 
                                 setCancha(e.target.value);
-                                if (dia != "" && horario != "" && e.target.value != "") setBotonDeshabilitado(false);
+                                if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") setBotonDeshabilitado(false);
 
                             }}>
                     <option value="">Seleccionar cancha</option>
@@ -220,19 +237,45 @@ function FormularioReserva() {
                 </select>
             </div>
             <label id ="aclaracion">*Las canchas que aparecen son aquellas disponibles para la hora y fecha elegidas</label>
-            <div className="form-group" id={visilidadInputs}>
-                <label >Ingrese su nombre: </label>
-                <input type="text" value={nombre} onChange={(e)=>{setNombre(e.target.value)}}></input>
+            <div className="label" /*id={visilidadInputs}*/>
+                <label >Nombre y apellido: </label>
+                <input type="text" value={nombre} disabled = {nombreYapellidoDeshabilitado} onChange={
+                    
+                    (e)=>{
+                        setNombre(e.target.value);
+                        if (e.target.value != "" && horario != "" && cancha != "" && dni != "" && telefono != "") setBotonDeshabilitado(false); 
+                    
+                    }
+                    
+                    }></input>
             </div>
-            <div className="form-group" id={visilidadInputs}>
-                <label>Ingrese su DNI: </label>
-                <input type="text" value={dni} onChange={(e)=>{setDni(e.target.value)}}></input>
+            <div className="label" /*id={visilidadInputs}*/>
+                <label>DNI: </label>
+                <input type="text" value={dni} disabled ={dniDeshabilitado} onChange={
+                    
+                    (e)=>{
+                        
+                        setDni(e.target.value);
+                        if (e.target.value != "" && horario != "" && cancha != "" && nombre != "" && telefono != "") setBotonDeshabilitado(false); 
+                    
+                    }
+                    
+                    }></input>
             </div>
-            <div className="form-group" id={visilidadInputs}>
-                <label>Ingrese su telefono: </label>
-                <input type="text"value={telefono} onChange={(e)=>{setTelefono(e.target.value)}}></input>
+            <div className="label" /*id={visilidadInputs}*/>
+                <label>Teléfono: </label>
+                <input type="text"value={telefono} disabled = {telefonoDeshabilitado} onChange={
+
+                    (e)=>{
+
+                        setTelefono(e.target.value);
+                        if (e.target.value != "" && horario != "" && cancha != "" && dni != "" && nombre != "") setBotonDeshabilitado(false); 
+                    
+                    }
+                    
+                    }></input>
             </div>
-            <div className="form-group">
+            <div className="label">
             
             </div>
             <button 
@@ -241,14 +284,36 @@ function FormularioReserva() {
                     className="btn-confirmar"
                     onClick={confirmarReserva}
                 > Confirmar reserva</button>
+
+
+            <button className = "btn-confirmar" onClick = {()=> setConsultarReserva(true)}>Ver mi reserva</button>  
         </div>
+                   
+
 
         { mostrarAlerta && <AlertaReserva
         mensaje={mensaje}
         exito={exito}
-        onClose={() => setMostrarAlerta(false)}   
+        onClose={
+
+            () => {
+                setMostrarAlerta(false)
+                setFechaDeshabilitada(false);
+                setHorarioDeshabilitado(false);
+                setCanchaDeshabilitado(false);
+                setNombreYApellidoDeshabilitado(false);
+                setDNIdeshabilitado(false);
+                setTelefonoDeshabilitado(false);
+
+
+            }
+        }   
 
         />  }
+
+        {
+            consultarReserva && <PanelConsultaReserva></PanelConsultaReserva>
+        }
         
         </>
                      

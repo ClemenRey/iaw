@@ -24,6 +24,12 @@ app.post('/reservar' , (req,res) => {
   dia = req.body.dia; // Dia seleccionado
   horario = req.body.horario; // Horario seleccionado 
   cancha = req.body.cancha; // Cancha seleccionada
+  nombreYapellido = req.body.nombreYapellido; // Nombre del dueño del turno
+  dni = req.body.dni;
+  telefono = req.body.telefono;
+
+  console.log("Nombre y apellido: " + nombreYapellido + "DNI: " + dni + "Telefono: " + telefono);
+  
 
   console.log("Cancha: " + cancha + "Horario: " + horario + "Dia: " + dia);
   console.log(fechas.get(dia)[2]);
@@ -40,34 +46,28 @@ app.post('/reservar' , (req,res) => {
           codigo = Math.floor(Math.random() * 1000);
         }
         console.log("El codigo de reserva es: " + codigo); // no sacar porque sino sale undefined xdxd
-        let reserva = {cancha: cancha, 
-                       dia: dia,
-                       horario: horario}; // Creo la reserva
-        reservas.set(codigo, reserva); // Agrego la reserva al mapa de reservas
+
+        let dueño = {
+
+          nombre : nombreYapellido,
+          dni : dni,
+          telefono : telefono
+
+        }
+
+        let reserva = {
+
+          cancha: cancha, 
+          dia: dia,
+          horario: horario,
+          dueño : dueño
+
+         }; // Creo la reserva
 
 
-        //Imprimir el mapeo para chequear
+        reservas.set(dni, reserva); // Agrego la reserva al mapa de reservas  
 
-    
-
-
-        /*for (const [fecha, horarios] of fechas.entries()) { // Para cada entrada de mi mapeo , osea cada fecha
-          console.log(`📅 Fecha: ${fecha}`);
-        
-          for (const [hora, disponibilidad] of Object.entries(horarios)) {
-            // Filtramos las canchas disponibles (valor === 1)
-            const canchasDisponibles = disponibilidad
-              .map((estado, index) => (estado === 1 ? index + 1 : null))
-              .filter((num) => num !== null);
-        
-            console.log(`  🕒 Horario: ${hora}`);
-            console.log(`    🟢 Canchas disponibles: ${canchasDisponibles.join(", ") || "ninguna"}`);
-          }
-        }*/
-        
-
-        res.json({ mensaje: "Reserva realizada con éxito" 
-                , codigo: codigo}); // Devuelvo el código de la reserva 
+        res.json({ mensaje: "Reserva realizada con éxito" }); // Devuelvo el código de la reserva 
       }
     }
   }
@@ -75,6 +75,22 @@ app.post('/reservar' , (req,res) => {
 
 
 );
+
+app.post('/consultar_reserva' , (req ,res) => {
+
+  console.log("Entre a /consultar_reserva"); // ok
+  console.log("DNI QUE VINO POR POST EN /consultar_reserva" + req.body.dni); // ok
+
+  const dni = req.body.dni;
+  console.log("DNI que vino en post: "+dni);
+  console.log("Reserva. nombre: " , reservas.get(dni).dueño);
+  res.json(reservas.get(dni));
+
+
+});
+
+
+
 //TODO hacer endpoint eliminar
 app.post('/eliminar_reserva', (req, res) => {});
 
