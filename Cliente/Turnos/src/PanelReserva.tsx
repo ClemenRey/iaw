@@ -3,52 +3,16 @@ import FormularioReserva from './FormularioReserva';
 
 const PanelReserva = () => {
   
-  // const reservar = () => {
-  //   alert(`Reserva realizada para ${cancha} a las ${horario}.`);
-  // };
-
-  // const eliminar = () => {
-  //   alert('Reserva eliminada.');
-  // };
-
-  // const consultar = () => {
-  //   alert('Consultando reserva...');
-  // };
 
   const irAStore = () => {
     window.location.href = '/store';
   };
 
-
-  /*useEffect() para traer horarios disponibles de la cancha seleccionada. Se activa cuando cambia la cancha*/
-  // useEffect(() => {
-
-  //           fetch('http://localhost:3001/horarios_disponibles' , {
-
-  //               method: 'POST',
-  //               headers: {
-  //                   'Content-Type': 'application/json'
-  //                 },
-  //               body: JSON.stringify( {cancha})
-  //           }).then(res => res.json())
-  //           .then(data => {
-
-  //               /*Pongo los horarios disponibles en la lista desplegable de horarios*/
-  //               alert("Este es mi alert data "+data);
-
-  //           })
-
-
-
-
-  // }, [cancha]);
-
-
   return (
     <div style={styles.container}>
       <h2>Reservar Cancha</h2>
       <FormularioReserva></FormularioReserva>
-      <button style={{ ...styles.button, ...styles.buttonDanger }}>Eliminar Reserva</button>
+      
     </div>
   );
 };

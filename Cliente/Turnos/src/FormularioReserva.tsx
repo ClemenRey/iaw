@@ -27,6 +27,7 @@ function FormularioReserva() {
     const [dniDeshabilitado, setDNIdeshabilitado] = useState(false);
     const [telefonoDeshabilitado , setTelefonoDeshabilitado] = useState(false);
     const [consultarReserva , setConsultarReserva] = useState(false);
+    const[dniCancelar , setDNICancelar] = useState("");
    
 
     const [visilidadConfirmar, setVisibilidadConfirmar] = useState("hidden");
@@ -65,33 +66,28 @@ function FormularioReserva() {
 
     } , [dia, horario]);
 
+    function cancelarReserva() {
 
+        /*Recuperar el dni de por ahí y mandarlo al back*/
+        fetch('http://localhost:3001/cancelar_reserva' , {
 
+            method : 'POST',
+            headers: {'Content-type' : 'application/json'},
+            body : JSON.stringify({
 
+                dni : dniCancelar
+            })
+        
+        }).then(res => res.json())
+        .then(data => {
 
-    /*function consultarCanchas() {
-        if(dia === "" || horario === ""){
-            return
-        }else{
-            const url = new URL('http://localhost:3001/canchas_disponibles');
-            url.searchParams.append('dia', dia);
-            url.searchParams.append('horario', horario);
-            fetch(url.toString() , {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            }).then(res => res.json())
-                .then(data => {
+            alert(data.mensaje);
 
-                setCanchaDisponibles(data);
-                alert("Este es mi alert data " + data);
+        })
+  
+  
+    }
 
-                })
-            setVisibilidadCanchas("visible");
-            setVisibilidadReservar("visible");
-        }
-    }*/
 
 
     function realizarReserva() {
@@ -204,15 +200,16 @@ function FormularioReserva() {
                     }}
                 >
                     <option value="">Seleccionar horario</option>
-                    <option value="0">Turno 1 - 9:00</option>
-                    <option value="1">Turno 2 - 10:30</option>
-                    <option value="2">Turno 3 - 12:00</option>
-                    <option value="3">Turno 4 - 13:30</option>
-                    <option value="4">Turno 5 - 15:00</option>T                    <option value="5">Turno 6 - 16:30</option>
-                    <option value="6">Turno 7 - 18:00</option>
-                    <option value="7">Turno 8 - 19:30</option>
-                    <option value="8">Turno 9 - 21:00</option>
-                    <option value="9">Turno 10 - 22:30</option>
+                    <option value="9:00"> Turno 1 - 9:00</option>
+                    <option value="10:30">Turno 2 - 10:30</option>
+                    <option value="12:00">Turno 3 - 12:00</option>
+                    <option value="13:30">Turno 4 - 13:30</option>
+                    <option value="15:00">Turno 5 - 15:00</option>
+                    <option value="16.30">Turno 6 - 16:30</option>
+                    <option value="18:00">Turno 7 - 18:00</option>
+                    <option value="19:30">Turno 8 - 19:30</option>
+                    <option value="21:00">Turno 9 - 21:00</option>
+                    <option value="22:30">Turno 10 - 22:30</option>
                 </select>
             </div>
            
@@ -286,7 +283,9 @@ function FormularioReserva() {
                 > Confirmar reserva</button>
 
 
-            <button className = "btn-confirmar" onClick = {()=> setConsultarReserva(true)}>Ver mi reserva</button>  
+            <button className = "btn-confirmar" onClick = {()=> setConsultarReserva(true)}>Ver mi reserva</button>
+            <button className="btn-confirmar" onClick = {cancelarReserva}>Cancelar reserva</button>  
+            <input type = "text" onChange={(e) => setDNICancelar(e.target.value)}></input>
         </div>
                    
 

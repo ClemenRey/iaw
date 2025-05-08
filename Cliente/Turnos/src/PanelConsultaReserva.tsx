@@ -1,8 +1,14 @@
 import { useState } from "react";
 
+import AlertaConsultaReserva from './AlertaConsultaReserva'
+
+
+
 function PanelConsultaReserva() {
 
     const [dni, setDNI] = useState("");
+    const [consulto, setConsulto] = useState(false);
+    const [datos, setDatos] = useState(null);
 
     function consultar() {
 
@@ -22,10 +28,13 @@ function PanelConsultaReserva() {
         .then(data => {
 
                 //Alert por ahora nomás
+                setDatos(data);
+                setConsulto(true);
                 alert(`Dueño de la reserva: ${data.dueño.nombre}`);
                 alert(`Dia de la reserva: ${data.dia}`);
                 alert(`Horario de la reserva: ${data.horario}`);
                 alert(`Cancha reservada: ${data.cancha}`);
+
             
             
         }); 
@@ -40,7 +49,19 @@ function PanelConsultaReserva() {
         <input onChange={(e) => setDNI(e.target.value)}></input>
         <button onClick = {consultar}>Consultar</button>
     </div>
+
+        
+    {
+
+    consulto && <AlertaConsultaReserva reserva = {datos}></AlertaConsultaReserva>
+
+    }
+
+
+
+
     </>
+    
     );
 
   

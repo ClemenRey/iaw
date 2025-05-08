@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+.panel-container {
+  display: flex;
+  flex-direction: row; /* Alinea los paneles en fila */
+  gap: 20px; /* Espacio entre los paneles */
+  padding: 20px;
+}
+
