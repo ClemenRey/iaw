@@ -108,8 +108,10 @@ app.post('/consultar_reserva' , (req ,res) => {
   const dni = req.body.dni;
   //console.log("DNI que vino en post: "+dni);
   //console.log("Reserva. nombre: " , reservas.get(dni).dueño);
+  if (!reservas.has(dni)) {
+    return res.status(404).json({ error: "No se encontró la reserva" });
+  }
   res.json(reservas.get(dni));
-
 
 });
 
@@ -120,7 +122,7 @@ app.post('/consultar_reserva' , (req ,res) => {
 /*Endopoint para traer los horarios disponibles de la cancha seleccionada*/
 app.post('/canchas_disponibles' , (req,res) => {
 
-    //console.log("Entré a /canchas_disponibles");
+    console.log("Entré a /canchas_disponibles desde modificar");
     dia = req.body.dia; // Dia seleccionado
     horarioString = req.body.horario; // Horario seleccionado
     horarioArrreglo = horarioANumero(horarioString);

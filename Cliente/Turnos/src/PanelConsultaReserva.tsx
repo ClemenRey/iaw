@@ -12,7 +12,7 @@ function PanelConsultaReserva() {
 
     function consultar() {
 
-        alert("Probando");
+        //alert("Probando");
         
         fetch('http://localhost:3001/consultar_reserva' , {
 
@@ -24,20 +24,34 @@ function PanelConsultaReserva() {
 
             })
            
-        }).then(res => res.json())
-        .then(data => {
+        }).then( (res) =>{
+            if (!res.ok) {throw new Error('Network response was not ok');}
+            return res.json();
+        }
+        
+        )
+        .then((data) => {
 
                 //Alert por ahora nomás
                 setDatos(data);
                 setConsulto(true);
-                alert(`Dueño de la reserva: ${data.dueño.nombre}`);
+                /*alert(`Dueño de la reserva: ${data.dueño.nombre}`);
                 alert(`Dia de la reserva: ${data.dia}`);
                 alert(`Horario de la reserva: ${data.horario}`);
-                alert(`Cancha reservada: ${data.cancha}`);
+                alert(`Cancha reservada: ${data.cancha}`);*/
 
             
             
-        }); 
+        }).catch(
+
+            (() => {            
+                alert("No se encontró la reserva con el DNI ingresado");
+                setConsulto(true);
+                //Acá 
+            })
+
+
+        ); 
 
 
     }
@@ -46,6 +60,7 @@ function PanelConsultaReserva() {
 
     <>   
     <div>
+        <label>Ingrese su DNI</label>
         <input onChange={(e) => setDNI(e.target.value)}></input>
         <button onClick = {consultar}>Consultar</button>
     </div>
@@ -56,10 +71,6 @@ function PanelConsultaReserva() {
     consulto && <AlertaConsultaReserva reserva = {datos}></AlertaConsultaReserva>
 
     }
-
-
-
-
     </>
     
     );

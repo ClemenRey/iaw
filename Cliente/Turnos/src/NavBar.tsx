@@ -1,14 +1,20 @@
 // Navbar.jsx
 import React from "react";
 
-export default function Navbar() {
+export default function Navbar({setVentanaElegida}) {
+
+
+
+
+
+
   return (
     <nav style={styles.nav}>
-      <div style={styles.logo}>MiApp</div>
+      <div style={styles.logo}></div>
       <ul style={styles.navLinks}>
-        <li><a href="#acerca">Acerca de</a></li>
-        <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#contacto">Contacto</a></li>
+        <li><button onClick={() => setVentanaElegida("reservar")}>Reservar</button></li>
+        <li><button onClick={() => setVentanaElegida("consultar")}>Consultar</button></li>
+        <li><button onClick={() => setVentanaElegida("modificar")}>Modificar</button></li>
       </ul>
     </nav>
   );

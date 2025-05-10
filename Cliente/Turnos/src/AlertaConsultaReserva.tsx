@@ -1,7 +1,22 @@
 import React from 'react';
 
 function AlertaConsultaReserva({ reserva }) {
-  if (!reserva) return null;
+
+  if (reserva == null) return (
+
+      <div>
+        <h2 className="text-xl font-semibold text-red-600 mb-4">Reserva no encontrada</h2>
+        <p className="text-gray-700">No se encontraron reservas para el DNI ingresado.</p>
+        <p className="text-gray-700">Por favor, verifique el DNI o intente nuevamente.</p>
+        <p className="text-gray-700">Si el problema persiste, comuníquese con el administrador.</p> 
+
+      </div>
+
+
+
+  )
+
+  else
 
   
 

@@ -281,11 +281,6 @@ function FormularioReserva() {
                     className="btn-confirmar"
                     onClick={confirmarReserva}
                 > Confirmar reserva</button>
-
-
-            <button className = "btn-confirmar" onClick = {()=> setConsultarReserva(true)}>Ver mi reserva</button>
-            <button className="btn-confirmar" onClick = {cancelarReserva}>Cancelar reserva</button>  
-            <input type = "text" onChange={(e) => setDNICancelar(e.target.value)}></input>
         </div>
                    
 
