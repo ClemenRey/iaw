@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-
+import './index.css';
 function PanelModificar() {
   const [dni, setDni] = useState("");
   const [reserva, setReserva] = useState(null);
@@ -105,24 +105,26 @@ function PanelModificar() {
 
   return (
     <div className="contenedor-formulario">
-      <div className="form-group">
-        <label className="label">Ingrese DNI:</label>
-        <input
-          type="text"
-          className="input"
-          value={dni}
-          onChange={(e) => setDni(e.target.value)}
-        />
-        <button onClick={buscarReserva} className="btn-confirmar">
-          Buscar Reserva
-        </button>
+      <h2>Modificar Reserva</h2>
+      <div className="formulario">
+        <div className="campo">
+          <label className="label">Ingrese DNI:</label>
+          <input
+            type="text"
+            className="input"
+            value={dni}
+            onChange={(e) => setDni(e.target.value)}
+          />
+        </div>
       </div>
+      <button onClick={buscarReserva} className="btn-confirmar"> Buscar Reserva </button>
 
       {mostrarMensaje && <div className="mensaje">{mensaje}</div>}
 
       {reserva && (
-        <div className="formulario-reserva">
-          <div className="form-group">
+      <>
+        <ul className="formulario">
+          <li className="campo">
             <label>Nombre y apellido:</label>
             <input
               type="text"
@@ -130,8 +132,8 @@ function PanelModificar() {
               disabled={!modoEdicion}
               onChange={(e) => setNombre(e.target.value)}
             />
-          </div>
-          <div className="form-group">
+          </li>
+          <li className="campo">
             <label>Teléfono:</label>
             <input
               type="text"
@@ -139,8 +141,8 @@ function PanelModificar() {
               disabled={!modoEdicion}
               onChange={(e) => setTelefono(e.target.value)}
             />
-          </div>
-          <div className="form-group">
+          </li>
+          <li className="campo">
             <label>Fecha:</label>
             <input
               type="date"
@@ -148,60 +150,47 @@ function PanelModificar() {
               disabled={!modoEdicion}
               onChange={(e) => setDia(e.target.value)}
             />
-          </div>
-          <div className="form-group">
-          <div className="form-group">
-  <label>Horario:</label>
-  <select
-    value={horario}
-    disabled={!modoEdicion}
-    onChange={(e) => setHorario(e.target.value)}
-  >
-    <option value="">Seleccionar horario</option>
-    <option value="9:00">Turno 1 - 9:00</option>
-    <option value="10:30">Turno 2 - 10:30</option>
-    <option value="12:00">Turno 3 - 12:00</option>
-    <option value="13:30">Turno 4 - 13:30</option>
-    <option value="15:00">Turno 5 - 15:00</option>
-    <option value="16:30">Turno 6 - 16:30</option>
-    <option value="18:00">Turno 7 - 18:00</option>
-    <option value="19:30">Turno 8 - 19:30</option>
-    <option value="21:00">Turno 9 - 21:00</option>
-    <option value="22:30">Turno 10 - 22:30</option>
-  </select>
-</div>
-
-          </div>
-          <div className="form-group">
+          </li>
+          <li className="campo">
+            <label>Horario:</label>
+            <select
+              value={horario}
+              disabled={!modoEdicion}
+              onChange={(e) => setHorario(e.target.value)}
+            >
+            <option value="">Seleccionar horario</option>
+            <option value="9:00">Turno 1 - 9:00</option>
+            <option value="10:30">Turno 2 - 10:30</option>
+            <option value="12:00">Turno 3 - 12:00</option>
+            <option value="13:30">Turno 4 - 13:30</option>
+            <option value="15:00">Turno 5 - 15:00</option>
+            <option value="16:30">Turno 6 - 16:30</option>
+            <option value="18:00">Turno 7 - 18:00</option>
+            <option value="19:30">Turno 8 - 19:30</option>
+            <option value="21:00">Turno 9 - 21:00</option>
+            <option value="22:30">Turno 10 - 22:30</option>
+            </select>
+          </li>
+          <li className="campo">
             <label>Cancha:</label>
             <select
               value={cancha}
               disabled={!modoEdicion}
               onChange={(e) => setCancha(e.target.value)}>
             <option value="">Seleccionar cancha</option>
-                    {canchaDisponibles.map((disponible, index) => (
-                        disponible?<option key={index} value={index}>Cancha {index+1}</option>:null
-                    ))}
-                    
+            {canchaDisponibles.map((disponible, index) => (
+                disponible?<option key={index} value={index}>Cancha {index+1}</option>:null
+                ))
+            }
+            </select>
+          </li>
 
-
-
-
-              </select>
-          </div>
-
-          {!modoEdicion ? (
-            <button onClick={() => setModoEdicion(true)} className="btn-confirmar">
-              Modificar
-            </button>
-          ) : (
-            <button onClick={guardarCambios} className="btn-confirmar">
-              Guardar Cambios
-            </button>
-          )}
-        </div>
-      )}
-    </div>
+        </ul>
+        {modoEdicion ? <button onClick={guardarCambios} className="btn-confirmar"> Guardar Cambios </button>
+                     : <button onClick={()=>setModoEdicion(true)} className="btn-confirmar"> Modificar </button>}
+      </>
+    )}
+  </div>
   );
 }
 

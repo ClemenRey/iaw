@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import FormularioReserva from './FormularioReserva';
-
+import './index.css';
 const PanelReserva = () => {
   
 

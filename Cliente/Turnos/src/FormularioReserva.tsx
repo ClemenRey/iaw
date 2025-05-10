@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import './FormularioReserva.css';
+import './index.css';
 import  AlertaReserva from './AlertaReserva';
-import PanelConsultaReserva from './PanelConsultaReserva';
-
-
 
 function FormularioReserva() {
 
@@ -15,7 +12,6 @@ function FormularioReserva() {
     const [nombre, setNombre] = useState("");
     const [dni, setDni] = useState("");
     const [telefono, setTelefono] = useState("");
-    const [visilidadInputs, setVisibilidadInputs] = useState("hidden");
     const [mostrarAlerta , setMostrarAlerta] = useState(false);
     const [mensaje , setMensaje] = useState("");
     const [exito, setExito] = useState(false);
@@ -26,82 +22,26 @@ function FormularioReserva() {
     const [nombreYapellidoDeshabilitado, setNombreYApellidoDeshabilitado] = useState(false);
     const [dniDeshabilitado, setDNIdeshabilitado] = useState(false);
     const [telefonoDeshabilitado , setTelefonoDeshabilitado] = useState(false);
-    const [consultarReserva , setConsultarReserva] = useState(false);
-    const[dniCancelar , setDNICancelar] = useState("");
-   
 
-    const [visilidadConfirmar, setVisibilidadConfirmar] = useState("hidden");
-    const [visibilidadCanchas, setVisibilidadCanchas] = useState("hidden");
-    const [visibilidadReservar, setVisibilidadReservar] = useState("hidden");
-    
-
-
-   
     useEffect (() => {
-
-            
             if (dia != "" && horario != "") {
 
             fetch('http://localhost:3001/canchas_disponibles' , {
-
                 method : 'POST',
                 headers: {'Content-type' : 'application/json'},
                 body: JSON.stringify({
                     dia : dia,
                     horario : horario
                   }),
-
-
             }).then(res => res.json())
             .then(data => {
-
-
                 setCanchaDisponibles(data);
-                setVisibilidadCanchas("visible");
-                setVisibilidadReservar("visible");
-                
             }); // Me convierte a objeto de JavaScript la respuesta
 
         }
 
     } , [dia, horario]);
-
-    function cancelarReserva() {
-
-        /*Recuperar el dni de por ahí y mandarlo al back*/
-        fetch('http://localhost:3001/cancelar_reserva' , {
-
-            method : 'POST',
-            headers: {'Content-type' : 'application/json'},
-            body : JSON.stringify({
-
-                dni : dniCancelar
-            })
-        
-        }).then(res => res.json())
-        .then(data => {
-
-            alert(data.mensaje);
-
-        })
-  
-  
-    }
-
-
-
-    function realizarReserva() {
-        if (nombre === "" || dni === "" || telefono === "") {
-            setVisibilidadInputs("visible");
-            alert("Por favor complete todos los campos");
-            return;
-        }else{
-            setVisibilidadConfirmar("visible");
-        }
-    }
-
     function confirmarReserva() {
-
         fetch('http://localhost:3001/reservar' , {
             method: 'POST',
             headers: {
@@ -126,9 +66,7 @@ function FormularioReserva() {
         })
             //TODO: MOSTRAR CONFIRMACION DE RESERVA
             .then(data => {
-                
-                console.log(data); //Reserva realizada con éxito
-                
+                console.log(data); //Reserva realizada con éxito        
                 setMensaje(`${data.mensaje}.Puede consultar su reserva haciendo click en Consultar mi reserva`);
                 setExito(true);
                 setMostrarAlerta(true);
@@ -143,18 +81,12 @@ function FormularioReserva() {
                 setNombreYApellidoDeshabilitado(true);
                 setDNIdeshabilitado(true);
                 setTelefonoDeshabilitado(true);
-
             })
             .catch(() => {
-
                 setMensaje(`No pudo realizarse la reserva. Complete todos los campos`);
                 setExito(false);
                 setMostrarAlerta(true);
-
             });
-            
-        
-
     }
 
     // Obtener la fecha actual en formato YYYY-MM-DD
@@ -168,147 +100,141 @@ function FormularioReserva() {
     return (
         <>
         <div className="contenedor-formulario">
-            <div className="form-group">
-                <label className="label">Fecha: </label>
-                <input 
-                    type="date"
-                    value={dia}
-                    disabled = {fechaDeshabilitada}
-                    min={obtenerFechaHoy()} // Establecer la fecha mínima como hoy
-                    onChange={
-                        
-                        (e) => {
-                        setDia(e.target.value); 
-                        if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") setBotonDeshabilitado(false);
-
-                    
-                    }}
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="horario" className="label">Horario:</label>
-                <select 
-                    id="horario" 
-                    value={horario}
-                    disabled = {horarioDeshabilitado}
-                    onChange={(e) => {
-
-                        setHorario(e.target.value);
-                        if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") setBotonDeshabilitado(false);
-
-                    
-                    }}
-                >
-                    <option value="">Seleccionar horario</option>
-                    <option value="9:00"> Turno 1 - 9:00</option>
-                    <option value="10:30">Turno 2 - 10:30</option>
-                    <option value="12:00">Turno 3 - 12:00</option>
-                    <option value="13:30">Turno 4 - 13:30</option>
-                    <option value="15:00">Turno 5 - 15:00</option>
-                    <option value="16.30">Turno 6 - 16:30</option>
-                    <option value="18:00">Turno 7 - 18:00</option>
-                    <option value="19:30">Turno 8 - 19:30</option>
-                    <option value="21:00">Turno 9 - 21:00</option>
-                    <option value="22:30">Turno 10 - 22:30</option>
-                </select>
-            </div>
-           
-            <div className="form-group">
-                <label htmlFor="cancha" className="label" >Seleccionar Cancha:</label>
-                <select id="cancha"
-                        value={cancha}
-                        disabled = {canchaDeshabilitado}
+            <h2>Reservar Cancha</h2>
+            <ul className='formulario'>
+                <li className='campo'>
+                    <label className="label">Fecha: </label>
+                    <input 
+                        type="date"
+                        value={dia}
+                        disabled = {fechaDeshabilitada}
+                        min={obtenerFechaHoy()} // Establecer la fecha mínima como hoy
                         onChange={
-
                             (e) => {
-
-                                setCancha(e.target.value);
-                                if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") setBotonDeshabilitado(false);
-
-                            }}>
-                    <option value="">Seleccionar cancha</option>
-                    {canchasDisponibles.map((disponible, index) => (
-                        disponible?<option key={index} value={index}>Cancha {index+1}</option>:null
-                    ))}
-                    
-                </select>
-            </div>
-            <label id ="aclaracion">*Las canchas que aparecen son aquellas disponibles para la hora y fecha elegidas</label>
-            <div className="label" /*id={visilidadInputs}*/>
-                <label >Nombre y apellido: </label>
-                <input type="text" value={nombre} disabled = {nombreYapellidoDeshabilitado} onChange={
-                    
-                    (e)=>{
-                        setNombre(e.target.value);
-                        if (e.target.value != "" && horario != "" && cancha != "" && dni != "" && telefono != "") setBotonDeshabilitado(false); 
-                    
-                    }
-                    
-                    }></input>
-            </div>
-            <div className="label" /*id={visilidadInputs}*/>
-                <label>DNI: </label>
-                <input type="text" value={dni} disabled ={dniDeshabilitado} onChange={
-                    
-                    (e)=>{
+                            setDia(e.target.value); 
+                            if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") {
+                                setBotonDeshabilitado(false)};
+                            }
+                        }
+                    />
+                </li>
+                <li className='campo'>
+                    <label htmlFor="horario" className="label">Horario:</label>
+                    <select 
+                        id="horario" 
+                        value={horario}
+                        disabled = {horarioDeshabilitado}
+                        onChange={(e) => {
+                            setHorario(e.target.value);
+                            if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") {
+                                setBotonDeshabilitado(false)
+                            };
+                        }}
+                    >
+                        <option value="">Seleccionar horario</option>
+                        <option value="9:00"> Turno 1 - 9:00</option>
+                        <option value="10:30">Turno 2 - 10:30</option>
+                        <option value="12:00">Turno 3 - 12:00</option>
+                        <option value="13:30">Turno 4 - 13:30</option>
+                        <option value="15:00">Turno 5 - 15:00</option>
+                        <option value="16.30">Turno 6 - 16:30</option>
+                        <option value="18:00">Turno 7 - 18:00</option>
+                        <option value="19:30">Turno 8 - 19:30</option>
+                        <option value="21:00">Turno 9 - 21:00</option>
+                        <option value="22:30">Turno 10 - 22:30</option>
+                    </select> 
+                </li>
+                <li className='campo'>
+                    <label htmlFor="cancha" className="label" >Seleccionar Cancha:</label>
+                    <select id="cancha"
+                            value={cancha}
+                            disabled = {canchaDeshabilitado}
+                            onChange={
+                                (e) => {
+                                    setCancha(e.target.value);
+                                    if (dia != "" && horario != "" && e.target.value != "" && nombre != "" && dni != "" && telefono != "") {
+                                        setBotonDeshabilitado(false);
+                                    }
+                                }}
+                        >
+                        <option value="">Seleccionar cancha</option>
+                        {canchasDisponibles.map((disponible, index) => (
+                            disponible?<option key={index} value={index}>Cancha {index+1}</option>:null
+                        ))}
+                    </select>    
+                </li>
+                <li><label id ="aclaracion">*Las canchas que aparecen son aquellas disponibles para la hora y fecha elegidas</label></li>
+                <li className='campo'>
+                    <label >Nombre y apellido: </label>
+                    <input type="text" value={nombre} disabled = {nombreYapellidoDeshabilitado} onChange={
+                        (e)=>{
+                            setNombre(e.target.value);
+                            if (e.target.value != "" && horario != "" && cancha != "" && dni != "" && telefono != "") {
+                                setBotonDeshabilitado(false)}; 
                         
-                        setDni(e.target.value);
-                        if (e.target.value != "" && horario != "" && cancha != "" && nombre != "" && telefono != "") setBotonDeshabilitado(false); 
-                    
+                        }    
                     }
-                    
-                    }></input>
-            </div>
-            <div className="label" /*id={visilidadInputs}*/>
-                <label>Teléfono: </label>
-                <input type="text"value={telefono} disabled = {telefonoDeshabilitado} onChange={
+                    >
+                    </input>
+                </li>
+                <li className='campo'>
+                    <label>DNI: </label>
+                    <input 
+                        type="text" 
+                        value={dni} 
+                        disabled ={dniDeshabilitado} 
+                        onChange={
+                            (e)=>{
+                                
+                                setDni(e.target.value);
+                                if (e.target.value != "" && horario != "" && cancha != "" && nombre != "" && telefono != ""){
+                                    setBotonDeshabilitado(false)}; 
+                            }
+                        }
+                    ></input>
+                </li>
+                <li className='campo'>
+                    <label>Teléfono: </label>
+                    <input 
+                        type="text"
+                        value={telefono} 
+                        disabled = {telefonoDeshabilitado} 
+                        onChange={
+                            (e)=>{
 
-                    (e)=>{
-
-                        setTelefono(e.target.value);
-                        if (e.target.value != "" && horario != "" && cancha != "" && dni != "" && nombre != "") setBotonDeshabilitado(false); 
-                    
-                    }
-                    
-                    }></input>
-            </div>
-            <div className="label">
-            
-            </div>
+                                setTelefono(e.target.value);
+                                if (e.target.value != "" && horario != "" && cancha != "" && dni != "" && nombre != "") setBotonDeshabilitado(false); 
+                            
+                            }
+                        }
+                    ></input>   
+                </li>
+            </ul>
             <button 
-
-                    disabled = {botonDeshabilitado}
-                    className="btn-confirmar"
-                    onClick={confirmarReserva}
-                > Confirmar reserva</button>
+                disabled = {botonDeshabilitado}
+                className="btn-confirmar"
+                onClick={confirmarReserva}
+            > 
+                Confirmar reserva
+            </button>
         </div>
                    
-
-
         { mostrarAlerta && <AlertaReserva
-        mensaje={mensaje}
-        exito={exito}
-        onClose={
-
-            () => {
-                setMostrarAlerta(false)
-                setFechaDeshabilitada(false);
-                setHorarioDeshabilitado(false);
-                setCanchaDeshabilitado(false);
-                setNombreYApellidoDeshabilitado(false);
-                setDNIdeshabilitado(false);
-                setTelefonoDeshabilitado(false);
-
-
-            }
-        }   
-
-        />  }
-
-        {
-            consultarReserva && <PanelConsultaReserva></PanelConsultaReserva>
+            mensaje={mensaje}
+            exito={exito}
+            onClose={
+                () => {
+                    setMostrarAlerta(false)
+                    setFechaDeshabilitada(false);
+                    setHorarioDeshabilitado(false);
+                    setCanchaDeshabilitado(false);
+                    setNombreYApellidoDeshabilitado(false);
+                    setDNIdeshabilitado(false);
+                    setTelefonoDeshabilitado(false);
+                }
+            }   
+            />  
         }
-        
         </>
                      
     );

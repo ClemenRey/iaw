@@ -1,8 +1,7 @@
 import { useState } from "react";
 
 import AlertaConsultaReserva from './AlertaConsultaReserva'
-
-
+import './index.css';
 
 function PanelConsultaReserva() {
 
@@ -59,18 +58,17 @@ function PanelConsultaReserva() {
     return(
 
     <>   
-    <div>
-        <label>Ingrese su DNI</label>
-        <input onChange={(e) => setDNI(e.target.value)}></input>
-        <button onClick = {consultar}>Consultar</button>
+    <div className="contenedor-formulario">
+        <h2>Consulta de reserva</h2>
+        <div className="formulario">
+            <div className="campo">
+                <label>Ingrese su DNI</label>
+                <input onChange={(e) => setDNI(e.target.value)}></input>
+            </div>
+        </div>
+        <button className="btn-confirmar" onClick = {consultar}>Consultar</button>
+        {consulto && <AlertaConsultaReserva reserva = {datos}></AlertaConsultaReserva>}
     </div>
-
-        
-    {
-
-    consulto && <AlertaConsultaReserva reserva = {datos}></AlertaConsultaReserva>
-
-    }
     </>
     
     );

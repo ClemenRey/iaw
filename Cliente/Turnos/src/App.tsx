@@ -1,19 +1,18 @@
 import { useState } from 'react'
-import './App.css'
-import PanelReserva from './PanelReserva'
+import './index.css'
+import FormularioReserva from './FormularioReserva'
 import NavBar from './NavBar'
 import PanelConsultaReserva from './PanelConsultaReserva'
 import PanelModificar from './PanelModificar'
 function App() {
 
-  const [count, setCount] = useState(0);
   const [ventanaElegida, setVentanaElegida] = useState("reservar");
 
   const panelElegido = () => {
 
     switch(ventanaElegida) {
 
-        case "reservar" : return <PanelReserva></PanelReserva>;
+        case "reservar" : return <FormularioReserva></FormularioReserva>;
         case "consultar" : return <PanelConsultaReserva></PanelConsultaReserva>;
         case "modificar" : return <PanelModificar></PanelModificar>
     }
@@ -22,14 +21,13 @@ function App() {
   }
 
   return (
-    <>
+    <div className='contenedor-general'>
       <NavBar setVentanaElegida={setVentanaElegida}/>
 
-      <div className="panel-container">
+      <div className="contenedor-formulario">
         {panelElegido()}
-       
       </div>
-    </>
+    </div>
   );
 }
 
