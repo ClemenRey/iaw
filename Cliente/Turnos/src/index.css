@@ -122,7 +122,7 @@ p#exito{
   align-items: center;
   width: 70%;
   background-color: #777D7D;
-  border: black 1px solid;
+  border: #d1cbc0 1px solid;
   border-radius: 5px;
   padding:1ch;
   margin-bottom: 1ch;
@@ -184,7 +184,7 @@ p#exito{
   gap: 2ch
 }
 .btn{
-  padding: 0.5rem 1rem;
+  padding: 0.5ch 1ch;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
@@ -214,4 +214,53 @@ p#exito{
   background-color: #e06f72;
   border: 2px solid #e06f72;
   color: #585d5d;
+}
+@media (max-width: 1080px) {
+  :root{
+    background-color: #585d5d;
+  }
+  body{
+    height: auto;
+    margin: 0;
+  }
+  .contenedor-general { 
+    width: 100%;
+    height: 100%
+  }
+
+  .contenedor-alerta {
+    width: 80%;
+  }
+
+  .formulario {
+    width: 85%;
+    justify-content: center;
+  }
+
+  .campo {
+    flex-direction: column;
+    align-items: center;
+    width: 85%
+  }
+  .campo label{
+    align-self: start;
+  }
+  .campo input,
+  .campo select {
+    width: 95%;
+  }
+
+  .botonera {
+    flex-direction: column;
+    gap: 1ch;
+  }
+
+  nav ul {
+    gap: 0.5ch;
+  }
+
+  .btn{
+    font-size: 1.1rem;
+    padding: 1ch 1.2ch;
+  }
 }
