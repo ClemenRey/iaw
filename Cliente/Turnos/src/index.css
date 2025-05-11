@@ -44,11 +44,29 @@ nav{
 }
 nav ul{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 1ch;
   width: 100%;
 }
-
+.btn-nav{
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  background-color: #585d5d;
+  color: #FFF8EB;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 2px solid #e06f72;
+}
+.btn-nav:hover{
+  border: 2px solid #FFF8EB;
+}
+.btn-nav#selected{
+  background-color: #FFF8EB;
+  color: #585d5d;
+}
 ul{
   list-style: none;
   padding: 0;
@@ -151,10 +169,10 @@ ul{
   color: #585d5d;
 }
 .btn-denegar{
-  border: 2px solid #f86d72;
+  border: 2px solid #e06f72;
   color: #e06f72;
 }
 .btn-denegar:hover{
-  background-color: #f86d72;
+  background-color: #e06f72;
   color: #585d5d;
 }
