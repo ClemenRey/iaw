@@ -212,7 +212,7 @@ function FormularioReserva() {
             </ul>
             <button 
                 disabled = {botonDeshabilitado}
-                className="btn-confirmar"
+                className="btn-confirmar btn"
                 onClick={confirmarReserva}
             > 
                 Confirmar reserva

@@ -126,18 +126,35 @@ ul{
   border: 2px solid transparent;
   cursor: default;
 }
-.btn-confirmar{
-  background-color: transparent;
-  color: #7BE8BF;
-  font-size: 1rem;
-  font-weight: bold;
-  border: 2px solid #7BE8BF;
+.botonera{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2ch
+}
+.btn{
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: bold;
+
+}
+.btn-confirmar{
+  color: #7BE8BF;
+  border: 2px solid #7BE8BF;
 }
 .btn-confirmar:hover{
   background-color: #7BE8BF;
+  color: #585d5d;
+}
+.btn-denegar{
+  border: 2px solid #f86d72;
+  color: #e06f72;
+}
+.btn-denegar:hover{
+  background-color: #f86d72;
   color: #585d5d;
 }

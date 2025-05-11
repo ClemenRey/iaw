@@ -66,7 +66,7 @@ function PanelConsultaReserva() {
                 <input onChange={(e) => setDNI(e.target.value)}></input>
             </div>
         </div>
-        <button className="btn-confirmar" onClick = {consultar}>Consultar</button>
+        <button className="btn-confirmar btn" onClick = {consultar}>Consultar</button>
         {consulto && <AlertaConsultaReserva reserva = {datos}></AlertaConsultaReserva>}
     </div>
     </>

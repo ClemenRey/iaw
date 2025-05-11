@@ -117,7 +117,7 @@ function PanelModificar() {
           />
         </div>
       </div>
-      <button onClick={buscarReserva} className="btn-confirmar"> Buscar Reserva </button>
+      <button onClick={buscarReserva} className="btn-confirmar btn"> Buscar Reserva </button>
 
       {mostrarMensaje && <div className="mensaje">{mensaje}</div>}
 
@@ -186,8 +186,11 @@ function PanelModificar() {
           </li>
 
         </ul>
-        {modoEdicion ? <button onClick={guardarCambios} className="btn-confirmar"> Guardar Cambios </button>
-                     : <button onClick={()=>setModoEdicion(true)} className="btn-confirmar"> Modificar </button>}
+        <div className="botonera">
+          {modoEdicion ? <button onClick={guardarCambios} className="btn-confirmar btn"> Guardar Cambios </button>
+                      : <button onClick={()=>setModoEdicion(true)} className="btn-confirmar btn"> Modificar </button>}
+          <button className="btn-denegar btn"> Eliminar </button>
+        </div>
       </>
     )}
   </div>
