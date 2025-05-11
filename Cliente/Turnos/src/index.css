@@ -72,7 +72,40 @@ ul{
   padding: 0;
   margin: 0;
 }
-
+.contenedor-alerta{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  border: 2px solid #FFF8EB;
+  border-radius: 5px;
+  margin-bottom: 2ch;
+  margin-top: 2ch;
+  padding: 1ch;
+}
+.contenedor-alerta#exito{
+  border: 2px solid #7BE8BF;
+}
+.contenedor-alerta#error{
+  border: 2px solid #e06f72;
+}
+.titulo-alerta{
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #FFF8EB;
+  text-align: center;
+}
+p{
+  margin-top: 0;
+  margin-bottom: 0.5ch;
+  text-align: center;
+  color: #d1cbc0;
+}
+p#exito{
+  color: #7BE8BF;
+}
 .contenedor-formulario{
   display: flex;
   flex-direction: column;
@@ -158,7 +191,11 @@ ul{
   background-color: transparent;
   font-size: 1rem;
   font-weight: bold;
-
+  color: #d1cbc0;
+  border: 2px solid #d1cbc0;
+}
+.btn:hover{
+  border: 2px solid #FFF8EB;
 }
 .btn-confirmar{
   color: #7BE8BF;
@@ -166,6 +203,7 @@ ul{
 }
 .btn-confirmar:hover{
   background-color: #7BE8BF;
+  border: 2px solid #7BE8BF;
   color: #585d5d;
 }
 .btn-denegar{
@@ -174,5 +212,6 @@ ul{
 }
 .btn-denegar:hover{
   background-color: #e06f72;
+  border: 2px solid #e06f72;
   color: #585d5d;
 }

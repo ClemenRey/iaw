@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import './index.css';
 export default function Navbar({setVentanaElegida}) {
-  const [idBotones, setIdBotones] = useState(["","",""]);
+  const [idBotones, setIdBotones] = useState(["selected","",""]);
   function seleccionarVentana(ventana, nroBoton){
     setVentanaElegida(ventana);
     let aux = ["","",""];
