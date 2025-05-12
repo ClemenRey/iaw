@@ -13,6 +13,7 @@ function PanelModificar() {
   const [cancha, setCancha] = useState("");
 
   const [mensaje, setMensaje] = useState("");
+  const [exito, setExito] = useState(false);
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
   const [canchaDisponibles, setCanchaDisponibles] = useState([]);
 
@@ -75,6 +76,7 @@ function PanelModificar() {
         setReserva(null);
         setMostrarMensaje(true);
         setMensaje("No se encontró la reserva con el DNI ingresado.");
+        setExito(false);
       });
   }
 
@@ -96,6 +98,7 @@ function PanelModificar() {
         setMensaje(data.mensaje || "Reserva modificada con éxito.");
         setMostrarMensaje(true);
         setModoEdicion(false);
+        setExito(true);
       })
       .catch(() => {
         setMensaje("No se pudo modificar la reserva.");
@@ -108,8 +111,9 @@ function PanelModificar() {
       <h2>Modificar Reserva</h2>
       <div className="formulario">
         <div className="campo">
-          <label className="label">Ingrese DNI:</label>
+          <label htmlFor="dni">Ingrese su DNI:</label>
           <input
+            id="dni"
             type="text"
             className="input"
             value={dni}
@@ -119,14 +123,15 @@ function PanelModificar() {
       </div>
       <button onClick={buscarReserva} className="btn-confirmar btn"> Buscar Reserva </button>
 
-      {mostrarMensaje && <div className="mensaje">{mensaje}</div>}
+      
 
       {reserva && (
       <>
         <ul className="formulario">
           <li className="campo">
-            <label>Nombre y apellido:</label>
+            <label htmlFor="nombre">Nombre y apellido:</label>
             <input
+              id="nombre"
               type="text"
               value={nombre}
               disabled={!modoEdicion}
@@ -134,8 +139,9 @@ function PanelModificar() {
             />
           </li>
           <li className="campo">
-            <label>Teléfono:</label>
+            <label htmlFor="telefono">Teléfono:</label>
             <input
+              id="telefono"
               type="text"
               value={telefono}
               disabled={!modoEdicion}
@@ -143,8 +149,9 @@ function PanelModificar() {
             />
           </li>
           <li className="campo">
-            <label>Fecha:</label>
+            <label htmlFor="fecha">Fecha:</label>
             <input
+              id="fecha"
               type="date"
               value={dia}
               disabled={!modoEdicion}
@@ -152,8 +159,9 @@ function PanelModificar() {
             />
           </li>
           <li className="campo">
-            <label>Horario:</label>
+            <label htmlFor="horario">Horario:</label>
             <select
+              id="horario"
               value={horario}
               disabled={!modoEdicion}
               onChange={(e) => setHorario(e.target.value)}
@@ -172,8 +180,9 @@ function PanelModificar() {
             </select>
           </li>
           <li className="campo">
-            <label>Cancha:</label>
+            <label htmlFor="cancha">Cancha:</label>
             <select
+              id="cancha"
               value={cancha}
               disabled={!modoEdicion}
               onChange={(e) => setCancha(e.target.value)}>
@@ -191,6 +200,7 @@ function PanelModificar() {
                       : <button onClick={()=>setModoEdicion(true)} className="btn-confirmar btn"> Modificar </button>}
           <button className="btn-denegar btn"> Eliminar </button>
         </div>
+        {mostrarMensaje && <div className="contenedor-alerta" id={exito? "exito" : "error"}>{mensaje}</div>}
       </>
     )}
   </div>

@@ -103,8 +103,9 @@ function FormularioReserva() {
             <h2>Reservar Cancha</h2>
             <ul className='formulario'>
                 <li className='campo'>
-                    <label className="label">Fecha: </label>
+                    <label className="label" htmlFor="fecha">Fecha: </label>
                     <input 
+                        id='fecha'
                         type="date"
                         value={dia}
                         disabled = {fechaDeshabilitada}
@@ -165,8 +166,8 @@ function FormularioReserva() {
                 </li>
                 <li><label id ="aclaracion">*Las canchas que aparecen son aquellas disponibles para la hora y fecha elegidas</label></li>
                 <li className='campo'>
-                    <label >Nombre y apellido: </label>
-                    <input type="text" value={nombre} disabled = {nombreYapellidoDeshabilitado} onChange={
+                    <label htmlFor='nombre'>Nombre y apellido: </label>
+                    <input id='nombre' type="text" value={nombre} disabled = {nombreYapellidoDeshabilitado} onChange={
                         (e)=>{
                             setNombre(e.target.value);
                             if (e.target.value != "" && horario != "" && cancha != "" && dni != "" && telefono != "") {
@@ -178,8 +179,9 @@ function FormularioReserva() {
                     </input>
                 </li>
                 <li className='campo'>
-                    <label>DNI: </label>
-                    <input 
+                    <label htmlFor="dni">DNI:</label> 
+                    <input
+                        id="dni"
                         type="text" 
                         value={dni} 
                         disabled ={dniDeshabilitado} 
@@ -194,8 +196,9 @@ function FormularioReserva() {
                     ></input>
                 </li>
                 <li className='campo'>
-                    <label>Teléfono: </label>
+                    <label htmlFor='telefono'>Teléfono: </label>
                     <input 
+                        id='telefono'
                         type="text"
                         value={telefono} 
                         disabled = {telefonoDeshabilitado} 

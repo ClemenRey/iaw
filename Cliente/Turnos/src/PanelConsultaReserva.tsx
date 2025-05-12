@@ -61,11 +61,11 @@ function PanelConsultaReserva() {
         <h2>Consulta de reserva</h2>
         <div className="formulario">
             <div className="campo">
-                <label>Ingrese su DNI</label>
-                <input onChange={(e) => setDNI(e.target.value)}></input>
+                <label htmlFor="dni">Ingrese su DNI:</label>
+                <input id='dni' onChange={(e) => setDNI(e.target.value)}></input>
             </div>
         </div>
-        <button className="btn-confirmar btn" onClick = {consultar}>Consultar</button>
+        <button className="btn-confirmar btn" onClick = {consultar}>Buscar Reserva</button>
         {consulto && <AlertaConsultaReserva reserva = {datos}></AlertaConsultaReserva>}
     </div>
     </>

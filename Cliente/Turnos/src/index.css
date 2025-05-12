@@ -2,6 +2,8 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  margin: 0;
+  padding: 0;
 
   color-scheme: light dark;
   color: #d1cbc0;
@@ -23,6 +25,7 @@ body {
   align-items: center;
   height: 100vh;
   width: 100vw;
+  margin: 0;
 }
 
 .contenedor-general {
@@ -125,7 +128,7 @@ p#exito{
   border: #d1cbc0 1px solid;
   border-radius: 5px;
   padding:1ch;
-  margin-bottom: 1ch;
+  margin-bottom: 2ch;
   margin-top: 1ch;
 }
 
@@ -218,6 +221,7 @@ p#exito{
 @media (max-width: 1080px) {
   :root{
     background-color: #585d5d;
+    font-size: 1.1rem;
   }
   body{
     height: auto;
