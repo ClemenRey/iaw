@@ -34,7 +34,11 @@ function AlertaConsultaReserva({ reserva }) {
           <span className="font-semibold text-gray-700">Hora:</span> {reserva.horario}
         </div>
         <div>
-          <span className="font-semibold text-gray-700">Cancha:</span> {reserva.cancha}
+          <span className="font-semibold text-gray-700">Cancha:</span> {
+            
+              reserva.cancha
+         
+          }
         </div>
         
       </div>

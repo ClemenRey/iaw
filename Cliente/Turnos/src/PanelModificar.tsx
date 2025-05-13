@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import './index.css';
+import AlertaEliminarReserva from "./AlertaEliminarReserva";
+
 function PanelModificar() {
+
   const [dni, setDni] = useState("");
   const [reserva, setReserva] = useState(null);
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -15,11 +18,12 @@ function PanelModificar() {
   const [mensaje, setMensaje] = useState("");
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
   const [canchaDisponibles, setCanchaDisponibles] = useState([]);
+  const [eliminar, setEliminar] = useState(false);
 
 
     useEffect (() => {
     
-                
+                       
                 if (dia != "" && horario != "") {
     
                 fetch('http://localhost:3001/canchas_disponibles' , {
@@ -67,7 +71,7 @@ function PanelModificar() {
         setTelefono(data.dueño.telefono);
         setDia(data.dia);
         setHorario(data.horario);
-        setCancha(data.cancha);
+        setCancha(data.cancha); // Viene un 1 del back
         setModoEdicion(false);
         setMostrarMensaje(false);
       })
@@ -91,14 +95,19 @@ function PanelModificar() {
         cancha,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+         if (!res.ok) {throw new Error();} // Con esto salto al catch
+        res.json();
+      
+      })
       .then((data) => {
-        setMensaje(data.mensaje || "Reserva modificada con éxito.");
+
+        setMensaje("Reserva modificada con éxito.");
         setMostrarMensaje(true);
         setModoEdicion(false);
       })
       .catch(() => {
-        setMensaje("No se pudo modificar la reserva.");
+        setMensaje("La cancha no se encuentra disponible");
         setMostrarMensaje(true);
       });
   }
@@ -174,14 +183,20 @@ function PanelModificar() {
           <li className="campo">
             <label>Cancha:</label>
             <select
-              value={cancha}
-              disabled={!modoEdicion}
-              onChange={(e) => setCancha(e.target.value)}>
-            <option value="">Seleccionar cancha</option>
-            {canchaDisponibles.map((disponible, index) => (
-                disponible?<option key={index} value={index}>Cancha {index+1}</option>:null
-                ))
-            }
+              value= {cancha} 
+              disabled={!modoEdicion} // Acá se activan los campos 
+              onChange={(e) => {
+              setCancha(e.target.value); //string
+              console.log(canchaDisponibles);
+              }}>
+
+                {
+                 modoEdicion ? (
+                 canchaDisponibles.map((disponible, index) => (
+                            disponible?<option key={index} value={index+1}>Cancha {index+1}</option> : null))) 
+                            : 
+                            (<option value={cancha}> Cancha {cancha}</option>)
+                }
             </select>
           </li>
 
@@ -189,10 +204,15 @@ function PanelModificar() {
         <div className="botonera">
           {modoEdicion ? <button onClick={guardarCambios} className="btn-confirmar btn"> Guardar Cambios </button>
                       : <button onClick={()=>setModoEdicion(true)} className="btn-confirmar btn"> Modificar </button>}
-          <button className="btn-denegar btn"> Eliminar </button>
+          <button className="btn-denegar btn" onClick = {() => setEliminar(true)}> Eliminar reserva</button>
         </div>
       </>
     )}
+
+    {eliminar && <AlertaEliminarReserva documento={dni} ></AlertaEliminarReserva>
+
+    }
+
   </div>
   );
 }
