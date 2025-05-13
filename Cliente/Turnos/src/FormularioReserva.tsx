@@ -67,7 +67,7 @@ function FormularioReserva() {
             //TODO: MOSTRAR CONFIRMACION DE RESERVA
             .then(data => {
                 console.log(data); //Reserva realizada con éxito        
-                setMensaje(`${data.mensaje}.Puede consultar su reserva haciendo click en Consultar mi reserva`);
+                setMensaje(`${data.mensaje}.`);
                 setExito(true);
                 setMostrarAlerta(true);
                 //Resetear los campos y deshabilitar el botón de confirmar
@@ -83,7 +83,7 @@ function FormularioReserva() {
                 setTelefonoDeshabilitado(true);
             })
             .catch(() => {
-                setMensaje(`No pudo realizarse la reserva. Complete todos los campos`);
+                setMensaje(`No pudo realizarse la reserva.`);
                 setExito(false);
                 setMostrarAlerta(true);
             });
@@ -217,24 +217,24 @@ function FormularioReserva() {
             > 
                 Confirmar reserva
             </button>
+            { mostrarAlerta && <AlertaReserva
+                mensaje={mensaje}
+                exito={exito}
+                onClose={
+                    () => {
+                        setMostrarAlerta(false)
+                        setFechaDeshabilitada(false);
+                        setHorarioDeshabilitado(false);
+                        setCanchaDeshabilitado(false);
+                        setNombreYApellidoDeshabilitado(false);
+                        setDNIdeshabilitado(false);
+                        setTelefonoDeshabilitado(false);
+                    }
+                }   
+                />  
+            }
         </div>
                    
-        { mostrarAlerta && <AlertaReserva
-            mensaje={mensaje}
-            exito={exito}
-            onClose={
-                () => {
-                    setMostrarAlerta(false)
-                    setFechaDeshabilitada(false);
-                    setHorarioDeshabilitado(false);
-                    setCanchaDeshabilitado(false);
-                    setNombreYApellidoDeshabilitado(false);
-                    setDNIdeshabilitado(false);
-                    setTelefonoDeshabilitado(false);
-                }
-            }   
-            />  
-        }
         </>
                      
     );

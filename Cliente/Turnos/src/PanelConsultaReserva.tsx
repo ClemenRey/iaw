@@ -12,7 +12,7 @@ function PanelConsultaReserva() {
     function consultar() {
 
         //alert("Probando");
-        
+        setDatos(null)
         fetch('http://localhost:3001/consultar_reserva' , {
 
             method : 'POST',
@@ -44,7 +44,6 @@ function PanelConsultaReserva() {
         }).catch(
 
             (() => {            
-                alert("No se encontró la reserva con el DNI ingresado");
                 setConsulto(true);
                 //Acá 
             })
