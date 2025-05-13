@@ -156,7 +156,7 @@ function PanelModificar() {
             <input
               type="date"
               value={dia}
-              disabled={!modoEdicion}
+              disabled={true}
               onChange={(e) => setDia(e.target.value)}
             />
           </li>
@@ -164,7 +164,7 @@ function PanelModificar() {
             <label>Horario:</label>
             <select
               value={horario}
-              disabled={!modoEdicion}
+              disabled={true}
               onChange={(e) => setHorario(e.target.value)}
             >
             <option value="">Seleccionar horario</option>
@@ -184,19 +184,14 @@ function PanelModificar() {
             <label>Cancha:</label>
             <select
               value= {cancha} 
-              disabled={!modoEdicion} // Acá se activan los campos 
+              disabled = {true} // Acá se activan los campos 
               onChange={(e) => {
               setCancha(e.target.value); //string
               console.log(canchaDisponibles);
               }}>
 
-                {
-                 modoEdicion ? (
-                 canchaDisponibles.map((disponible, index) => (
-                            disponible?<option key={index} value={index+1}>Cancha {index+1}</option> : null))) 
-                            : 
-                            (<option value={cancha}> Cancha {cancha}</option>)
-                }
+              <option value={cancha}> Cancha {cancha}</option>
+                
             </select>
           </li>
 
@@ -209,7 +204,9 @@ function PanelModificar() {
       </>
     )}
 
-    {eliminar && <AlertaEliminarReserva documento={dni} ></AlertaEliminarReserva>
+    {
+    
+    eliminar && <AlertaEliminarReserva documento={dni} mostrarReserva={() => {setReserva(null); setEliminar(false) }}></AlertaEliminarReserva>
 
     }
 

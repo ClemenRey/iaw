@@ -118,23 +118,12 @@ app.post('/consultar_reserva' , (req ,res) => {
 
 app.post('/modificar_reserva' , (req ,res) => {
 
-  console.log("Entre a /modificar_reserva"); 
-
-  /*Imprimo datos que vienen del front para ver que onda*/
-  console.log(req.body.dni);
-  console.log(req.body.nombre);
-  console.log(req.body.telefono);
-  console.log(req.body.dia);
-  console.log(req.body.horario);
-  console.log(req.body.cancha);
+  console.log("Entre a /modificar_reserva");
  
   /*Recupero los datos de la reserva modificada*/ 
   dni = req.body.dni;
   nombre = req.body.nombre;
   telefono = req.body.telefono; 
-  dia = req.body.dia; 
-  horarioString = req.body.horario; 
-  cancha = req.body.cancha; 
 
   /*Primero recupero la antigua reserva con el dni*/ 
   reserva = reservas.get(dni); // Reserva vieja
@@ -147,50 +136,14 @@ app.post('/modificar_reserva' , (req ,res) => {
   /*Actualizo los valores de la reserva con los que vienen nuevos*/ 
   reserva.dueño.nombre = nombre;
   reserva.dueño.telefono = telefono;
-  reserva.dia = dia;   
-  reserva.horario = horarioString; 
-  reserva.cancha = cancha; 
+
 
   /*Saco la fecha reservada anteriormente para poder reescribir*/
   
-
-
-
-  /*Actualizo el mapa de fechas*/
-
-  if (fechas.has(dia)) { // Si el día ya existe en el mapeo
-
-  console.log("horarioANumero(horarioString): " + horarioANumero(horarioString));
-  if (fechas.get(dia)[horarioANumero(horarioString)][cancha] == true) {
-
-  fechas.get(dia)[horarioANumero(horarioString)][cancha] = false; // La cancha ya no está disponible
   reservas.set(dni, reserva);  // actualizo mapeo de reservas  
   res.json(reservas.get(dni)); // devuelvo la reserva
 
-  }
-
-  else {
-
-
-   return res.status(404).json({mensaje : "Cancha ya reservada"});
-
-  }
-
-  }
-
-  else {
-
-    let horarios = Array.from({length : 10} , () => [true,true,true]);
-    fechas.set(dia,horarios);
-    fechas.get(dia)[horarioANumero(horarioString)][cancha] = false; // La cancha ya no está disponible
-    reservas.set(dni, reserva);  // actualizo mapeo de reservas  
-    res.json(reservas.get(dni)); // devuelvo la reserva
-
-  } 
-
-
-
-});
+  });
 
 
 

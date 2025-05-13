@@ -1,7 +1,7 @@
 
 
 
-function AlertaEliminarReserva({ documento }) {
+function AlertaEliminarReserva({ documento , mostrarReserva }) {
 
 
 function confirmarEliminacion() {
@@ -20,6 +20,8 @@ function confirmarEliminacion() {
     .then(data => {
 
         alert(data.mensaje);
+        mostrarReserva();
+        
 
 
     });
@@ -31,10 +33,12 @@ function confirmarEliminacion() {
 
 
 return(
-<div>
-<p>Está seguro que quiere eliminar su reserva?</p>
-<button onClick = {confirmarEliminacion}>Confimar</button>
-<button>Cancelar</button>
+<div className="contenedor-alerta">
+    <p>Está seguro que quiere eliminar su reserva?</p>
+    <div>
+    <button className="btn btn-confirmar" onClick = {confirmarEliminacion}>Confimar</button>
+    <button className="btn btn-denegar">Cancelar</button>
+    </div>
 </div>
 )
 
