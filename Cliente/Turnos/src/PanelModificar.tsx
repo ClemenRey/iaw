@@ -20,14 +20,16 @@ function PanelModificar() {
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
   const [canchaDisponibles, setCanchaDisponibles] = useState([]);
   const [eliminar, setEliminar] = useState(false);
+  
 
+  const API_URL = process.env.REACT_APP_API_URL;
 
     useEffect (() => {
     
                        
                 if (dia != "" && horario != "") {
     
-                fetch('http://localhost:3001/canchas_disponibles' , {
+                fetch(`${API_URL}/canchas_disponibles` , {
     
                     method : 'POST',
                     headers: {'Content-type' : 'application/json'},
@@ -38,13 +40,9 @@ function PanelModificar() {
     
     
                 }).then(res => res.json())
-                .then(data => {
-    
-                    console.log("Canchas disponibles: ", data);   
+                .then(data => {   
                     setCanchaDisponibles(data);
-                
-                    
-                }); // Me convierte a objeto de JavaScript la respuesta
+                }); 
     
             }
     
@@ -57,7 +55,7 @@ function PanelModificar() {
 
 
   function buscarReserva() {
-    fetch("http://localhost:3001/consultar_reserva", {
+    fetch(`${API_URL}/consultar_reserva`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ dni }),
@@ -77,6 +75,7 @@ function PanelModificar() {
         setMostrarMensaje(false);
       })
       .catch(() => {
+        
         setReserva(null);
         setMostrarMensaje(true);
         setMensaje("No se encontró la reserva con el DNI ingresado.");
@@ -85,7 +84,7 @@ function PanelModificar() {
   }
 
   function guardarCambios() {
-    fetch("http://localhost:3001/modificar_reserva", {
+    fetch(`${API_URL}/modificar_reserva`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
@@ -126,7 +125,16 @@ function PanelModificar() {
             type="text"
             className="input"
             value={dni}
-            onChange={(e) => setDni(e.target.value)}
+            onChange={(e) => 
+              
+              { 
+                setDni(e.target.value)
+                setEliminar(false);
+                setReserva(null);
+
+            }
+
+            }
           />
         </div>
       </div>
@@ -193,10 +201,9 @@ function PanelModificar() {
             <select
               id="cancha"
               value= {cancha} 
-              disabled = {true} // Acá se activan los campos 
+              disabled = {true}  
               onChange={(e) => {
-              setCancha(e.target.value); //string
-              console.log(canchaDisponibles);
+              setCancha(e.target.value); 
               }}>
 
               <option value={cancha}> Cancha {cancha}</option>
@@ -207,16 +214,18 @@ function PanelModificar() {
         </ul>
         <div className="botonera">
           {modoEdicion ? <button onClick={guardarCambios} className="btn-confirmar btn"> Guardar Cambios </button>
-                      : <button onClick={()=>setModoEdicion(true)} className="btn-confirmar btn"> Modificar </button>}
-          <button className="btn-denegar btn" onClick = {() => setEliminar(true)}> Eliminar reserva</button>
+                      : <button onClick={()=> {setModoEdicion(true); setMostrarMensaje(false); setEliminar(false)}} className="btn-confirmar btn"> Modificar </button>}
+          <button className="btn-denegar btn" disabled={modoEdicion} onClick = {() => {setEliminar(true); setMostrarMensaje(false)}}> Eliminar reserva</button>
         </div>
-        {mostrarMensaje && <div className="contenedor-alerta" id={exito? "exito" : "error"}>{mensaje}</div>}
+        
       </>
     )}
 
+    {mostrarMensaje && <div className="contenedor-alerta" id={exito? "exito" : "error"}>{mensaje}</div>}
+
     {
     
-    eliminar && <AlertaEliminarReserva documento={dni} mostrarReserva={() => {setReserva(null); setEliminar(false) }}></AlertaEliminarReserva>
+    eliminar && <AlertaEliminarReserva accionCancelar = {() => setEliminar(false)} documento={dni} mostrarReserva={() => {setReserva(null); setEliminar(false) }}></AlertaEliminarReserva>
 
     }
 

@@ -6,7 +6,7 @@ const app = express();
 const path = require('path');
 
 const cors = require('cors');
-app.use(cors()); // habilita todas las solicitudes desde cualquier origen
+app.use(cors()); 
 
 
 app.use(express.json());
@@ -44,34 +44,34 @@ function horarioANumero(hora) {
 /*Endpoint que responde a la reserva de un turno*/ 
 app.post('/reservar' , (req,res) => {
 
-  dia = req.body.dia; // Dia seleccionado
-  horarioString = req.body.horario; // Horario seleccionado --> Ahora es un String
+
+  dia = req.body.dia; 
+  horarioString = req.body.horario; 
   horarioArrreglo = horarioANumero(horarioString);
-  cancha = parseInt(req.body.cancha,10); // Cancha seleccionada
-  console.log("Cancha que vino desde el front : " , cancha);
-  nombreYapellido = req.body.nombreYapellido; // Nombre del dueño del turno
+  cancha = parseInt(req.body.cancha,10); 
+  nombreYapellido = req.body.nombreYapellido; 
   dni = req.body.dni;
   telefono = req.body.telefono;
 
-  //console.log("Nombre y apellido: " + nombreYapellido + "DNI: " + dni + "Telefono: " + telefono);
+  if (reservas.has(dni)) {
+
+     return res.status(400).json({mensaje : "Solo se permite una sola reserva por DNI"});
+  }
   
-
-  //console.log("Cancha: " + cancha + "Horario: " + horario + "Dia: " + dia);
- // console.log(fechas.get(dia)[2]);
-
-
-  //TODO AGREGAR LOS DATOS A LA RESERVA
+  
   
     if(fechas.has(dia)){
-      if(fechas.get(dia)[horarioArrreglo][cancha-1]){ // Si la cancha seleccionada está disponible
-        fechas.get(dia)[horarioArrreglo][cancha-1] = false; // La cancha ya no está disponible --> Esto me 
 
-        let codigo = Math.floor(Math.random() * 1000); // Genero un código aleatorio para la reserva
-        while(reservas.has(codigo)){ // Si el código ya existe, genero otro
+      if (fechas.get(dia)[horarioArrreglo][cancha-1])
+        { // Si la cancha seleccionada está disponible
+          fechas.get(dia)[horarioArrreglo][cancha-1] = false; // La cancha ya no está disponible 
+          let codigo = Math.floor(Math.random() * 1000); // Genero un código aleatorio para la reserva
+          while(reservas.has(codigo)){ // Si el código ya existe, genero otro
+
           codigo = Math.floor(Math.random() * 1000);
-        }
-        //console.log("El codigo de reserva es: " + codigo); // no sacar porque sino sale undefined xdxd
 
+        }
+        
         let dueño = {
 
           nombre : nombreYapellido,
@@ -96,19 +96,14 @@ app.post('/reservar' , (req,res) => {
       }
     }
   }
-/*Agregar la reserva al arreglo*/
+
 
 
 );
 
 app.post('/consultar_reserva' , (req ,res) => {
 
-  //console.log("Entre a /consultar_reserva"); // ok
-  //console.log("DNI QUE VINO POR POST EN /consultar_reserva" + req.body.dni); // ok
-
   const dni = req.body.dni;
-  //console.log("DNI que vino en post: "+dni);
-  //console.log("Reserva. nombre: " , reservas.get(dni).dueño);
   if (!reservas.has(dni)) {
     return res.status(404).json({ error: "No se encontró la reserva" });
   }
@@ -117,8 +112,6 @@ app.post('/consultar_reserva' , (req ,res) => {
 });
 
 app.post('/modificar_reserva' , (req ,res) => {
-
-  console.log("Entre a /modificar_reserva");
  
   /*Recupero los datos de la reserva modificada*/ 
   dni = req.body.dni;
@@ -126,12 +119,12 @@ app.post('/modificar_reserva' , (req ,res) => {
   telefono = req.body.telefono; 
 
   /*Primero recupero la antigua reserva con el dni*/ 
-  reserva = reservas.get(dni); // Reserva vieja
+  reserva = reservas.get(dni); 
 
   reservas.delete(dni);
 
   fechas.get(reserva.dia)[horarioANumero(reserva.horario)][reserva.cancha] = true; // La cancha vuelve a estar disponible
-  // portencial problema de concurrencia acá
+ 
 
   /*Actualizo los valores de la reserva con los que vienen nuevos*/ 
   reserva.dueño.nombre = nombre;
@@ -146,59 +139,39 @@ app.post('/modificar_reserva' , (req ,res) => {
   });
 
 
-
-
-
-
 /*Endopoint para traer los horarios disponibles de la cancha seleccionada*/
 app.post('/canchas_disponibles' , (req,res) => {
 
-    console.log("Entré a /canchas_disponibles desde modificar");
-    dia = req.body.dia; // Dia seleccionado
-    horarioString = req.body.horario; // Horario seleccionado
+    dia = req.body.dia; 
+    horarioString = req.body.horario;
     horarioArrreglo = horarioANumero(horarioString);
-    //console.log("Dia :" + dia + "Horario :" + horario);
+    
 
     if (!dia || !horarioString) {
       return res.status(400).json({ error: "Faltan parámetros 'dia' o 'horario'" });
     }
 
-    if(!fechas.has(dia)){ // Si el dia no existe en el mapa, lo seteo todo disponible
-        //fechas.set(dia, new Array(10).fill(new Array(3).fill(true))); // Esto era el error, odas las componentes del array de horarios 
-        // apunta al mismo array de canchas. Entonces si modifico el array de canchas, lo modifico para todos los horarios y no es lo que quería
+    if(!fechas.has(dia)){
+        
         let horarios = Array.from({length : 10} , () => [true,true,true]);
         fechas.set(dia,horarios);
-
-
         res.json(fechas.get(dia)[horarioArrreglo]);
     }
-    else{ // Si el dia existe, devuelvo el arreglo de la fecha seleccionada
-        res.json(fechas.get(dia)[horarioArrreglo]); // Canchas disponibles a esa hora --> Acá me  get(dia)[horario],
-        // el horario tiene que ser un nro del 0 al 10 y yo recibí un string representando el hs
-    }
+    else
+        { 
+
+          res.json(fechas.get(dia)[horarioArrreglo]); 
+          
+        }
 
 });
 
 
-/*
-app.post('/cancelar_reserva' , (req, res) => {
-
-    Entrar al mapeo reservas y eliminar la entrada que tenga como clave el DNI recibido
-    console.log("Entré a cancelar reserva");
-    let clave = req.body.dni;
-    
-   if (reservas.delete(clave)) res.json({mensaje : "Su reserva ha sido cancelada con éxito"})
-
-   else res.json({mensaje : "No se encontró la reserva"});
-
-})*/
 
 /*Endpoint para eliminar una reserva*/
 app.post('/eliminar_reserva' , (req, res) => {
-
-console.log("Entre a /eliminar_reserva");  
-let dni = req.body.dni; 
-console.log("req.body.dni = " + dni);  
+  
+let dni = req.body.dni;   
 let reserva = reservas.get(dni); // Resguardo la reserva, tengo que actualizar el mapeo de fechas
 
 fechas.get(reserva.dia)[horarioANumero(reserva.horario)][reserva.cancha-1] = true; // La cancha vuelve a estar disponible ese día a esa hora
@@ -211,7 +184,7 @@ res.json({mensaje : "Reserva eliminada con éxito"});
 
 
 
-const PORT = process.env.PORT || 3001; // Esucha en puerto 3000
+const PORT = process.env.PORT || 3001; 
 app.listen(PORT, () => {
   console.log(`Servidor ejecutándose en el puerto ${PORT}`);
 }); 

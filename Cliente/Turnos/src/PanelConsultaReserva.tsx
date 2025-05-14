@@ -3,6 +3,8 @@ import { useState } from "react";
 import AlertaConsultaReserva from './AlertaConsultaReserva'
 import './index.css';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function PanelConsultaReserva() {
 
     const [dni, setDNI] = useState("");
@@ -11,9 +13,9 @@ function PanelConsultaReserva() {
 
     function consultar() {
 
-        //alert("Probando");
+        
         setDatos(null)
-        fetch('http://localhost:3001/consultar_reserva' , {
+        fetch(`${API_URL}/consultar_reserva` , {
 
             method : 'POST',
             headers: {'Content-type' : 'application/json'},
@@ -31,21 +33,15 @@ function PanelConsultaReserva() {
         )
         .then((data) => {
 
-                //Alert por ahora nomás
                 setDatos(data);
                 setConsulto(true);
-                /*alert(`Dueño de la reserva: ${data.dueño.nombre}`);
-                alert(`Dia de la reserva: ${data.dia}`);
-                alert(`Horario de la reserva: ${data.horario}`);
-                alert(`Cancha reservada: ${data.cancha}`);*/
-
-            
             
         }).catch(
 
-            (() => {            
+            (() => {     
+
                 setConsulto(true);
-                //Acá 
+                
             })
 
 

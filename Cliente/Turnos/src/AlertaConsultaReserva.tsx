@@ -1,5 +1,14 @@
 
-function AlertaConsultaReserva({ reserva }) {
+interface Reserva {
+  dueño: {
+    nombre: string;
+  };
+  dia: string;
+  horario: string;
+  cancha: string;
+}
+
+function AlertaConsultaReserva({ reserva }: { reserva: Reserva | null }) {
 
   if (reserva == null) return (
 

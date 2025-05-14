@@ -3,6 +3,10 @@ import { useEffect } from 'react';
 import './index.css';
 import  AlertaReserva from './AlertaReserva';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
+
 function FormularioReserva() {
 
     const [cancha, setCancha] = useState("");
@@ -26,7 +30,7 @@ function FormularioReserva() {
     useEffect (() => {
             if (dia != "" && horario != "") {
 
-            fetch('http://localhost:3001/canchas_disponibles' , {
+            fetch(`${API_URL}/canchas_disponibles` , {
                 method : 'POST',
                 headers: {'Content-type' : 'application/json'},
                 body: JSON.stringify({
@@ -42,7 +46,7 @@ function FormularioReserva() {
 
     } , [dia, horario]);
     function confirmarReserva() {
-        fetch('http://localhost:3001/reservar' , {
+        fetch(`${API_URL}/reservar` , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,17 +64,16 @@ function FormularioReserva() {
         }).then(res => {
 
             const data = res.json();
-            if (!res.ok) {throw new Error("Error en la reserva")}
+            if (!res.ok) {throw new Error("Error");}
             return data;    
         
         })
-            //TODO: MOSTRAR CONFIRMACION DE RESERVA
+            
             .then(data => {
-                console.log(data); //Reserva realizada con éxito        
+                      
                 setMensaje(`${data.mensaje}.`);
                 setExito(true);
                 setMostrarAlerta(true);
-                //Resetear los campos y deshabilitar el botón de confirmar
                 setDia("");
                 setHorario("");
                 setCancha("");
@@ -83,7 +86,8 @@ function FormularioReserva() {
                 setTelefonoDeshabilitado(true);
             })
             .catch(() => {
-                setMensaje(`No pudo realizarse la reserva.`);
+                
+                setMensaje("Solo se permite una reserva por DNI");
                 setExito(false);
                 setMostrarAlerta(true);
             });
@@ -232,6 +236,9 @@ function FormularioReserva() {
                         setNombreYApellidoDeshabilitado(false);
                         setDNIdeshabilitado(false);
                         setTelefonoDeshabilitado(false);
+                        setNombre("");
+                        setDni("");
+                        setTelefono(""); 
                     }
                 }   
                 />  
