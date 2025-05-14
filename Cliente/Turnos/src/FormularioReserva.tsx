@@ -160,7 +160,7 @@ function FormularioReserva() {
                         >
                         <option value="">Seleccionar cancha</option>
                         {canchasDisponibles.map((disponible, index) => (
-                            disponible?<option key={index} value={index}>Cancha {index+1}</option>:null
+                            disponible?<option key={index} value={index+1}>Cancha {index+1}</option>:null
                         ))}
                     </select>    
                 </li>
