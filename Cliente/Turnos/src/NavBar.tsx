@@ -1,10 +1,15 @@
 // Navbar.jsx
-import React from "react";
 import { useState } from "react";
 import './index.css';
-export default function Navbar({setVentanaElegida}) {
+interface NavbarProps {
+  setVentanaElegida: (ventana: string) => void;
+}
+
+export default function Navbar({ setVentanaElegida }: NavbarProps) {
   const [idBotones, setIdBotones] = useState(["selected","",""]);
-  function seleccionarVentana(ventana, nroBoton){
+
+
+  function seleccionarVentana(ventana : string, nroBoton : number){
     setVentanaElegida(ventana);
     let aux = ["","",""];
     aux[nroBoton] = "selected";

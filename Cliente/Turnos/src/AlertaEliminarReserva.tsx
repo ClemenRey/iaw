@@ -23,7 +23,7 @@ function confirmarEliminacion() {
         })
 
     }).then (res => res.json())
-    .then(data => {
+    .then(() => {
 
         mostrarReserva();
        

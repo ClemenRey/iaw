@@ -1,6 +1,6 @@
 
 
- function AlertaReserva({ mensaje, exito, onClose }) {
+ function AlertaReserva({ mensaje, exito, onClose }: { mensaje: string; exito: boolean; onClose: () => void }) {
     return (
       <div className="contenedor-alerta" id={exito ? "exito" : "error"}>
         <p id={exito ? "exito" : "error"}>{mensaje}</p>

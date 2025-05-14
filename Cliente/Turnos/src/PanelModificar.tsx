@@ -18,7 +18,7 @@ function PanelModificar() {
   const [mensaje, setMensaje] = useState("");
   const [exito, setExito] = useState(false);
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
-  const [canchaDisponibles, setCanchaDisponibles] = useState([]);
+  //const [canchaDisponibles, setCanchaDisponibles] = useState([]);
   const [eliminar, setEliminar] = useState(false);
   
 
@@ -40,9 +40,9 @@ function PanelModificar() {
     
     
                 }).then(res => res.json())
-                .then(data => {   
-                    setCanchaDisponibles(data);
-                }); 
+                /*.then(data => {   
+                    //setCanchaDisponibles(data);
+                }); */
     
             }
     
@@ -101,7 +101,7 @@ function PanelModificar() {
         res.json();
       
       })
-      .then((data) => {
+      .then(() => {
 
         setMensaje("Reserva modificada con éxito.");
         setMostrarMensaje(true);
