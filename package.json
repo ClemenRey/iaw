@@ -6,7 +6,7 @@
   "description": "Full-stack application with React frontend and Express backend",
   "scripts": {
    
-    "install:all": "npm install && cd Cliente && cd Turnos && npm install && cd ../../Servidor && npm install",
+    "install:all": "npm install && cd Cliente && cd Turnos && npm install && cd ../../Servidor && npm install && npm install express",
     "build": "cd Cliente && cd Turnos && npm run build",
     "start": "cd Servidor && npm run start",
     "dev": "concurrently \"cd Cliente && cd Turnos && npm run dev\" \"cd Servidor && npm run dev\""
