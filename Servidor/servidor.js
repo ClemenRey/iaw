@@ -43,15 +43,6 @@ function horarioANumero(hora) {
 
 }
 
-// In production, serve static files from the frontend build directory
-if (process.env.DEPLOY_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../frontend/dist')))
-
-  // For all other routes, serve the index.html
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'))
-  })
-}
 
 
 
@@ -204,3 +195,14 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor ejecutándose en el puerto ${PORT}`);
 }); 
+
+
+// In production, serve static files from the frontend build directory
+if (process.env.DEPLOY_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../Cliente/Turnos/dist')))
+
+  // For all other routes, serve the index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Cliente/Turnos/dist/index.html'))
+  })
+}
