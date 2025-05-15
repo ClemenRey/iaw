@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import './index.css';
 import  AlertaReserva from './AlertaReserva';
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 function FormularioReserva() {
 
@@ -28,7 +27,7 @@ function FormularioReserva() {
     useEffect (() => {
             if (dia != "" && horario != "") {
 
-            fetch(`${API_URL}/canchas_disponibles` , {
+            fetch(`/canchas_disponibles` , {
                 method : 'POST',
                 headers: {'Content-type' : 'application/json'},
                 body: JSON.stringify({
@@ -44,7 +43,7 @@ function FormularioReserva() {
 
     } , [dia, horario]);
     function confirmarReserva() {
-        fetch(`${API_URL}/reservar` , {
+        fetch(`/reservar` , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

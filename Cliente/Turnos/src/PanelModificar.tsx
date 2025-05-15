@@ -22,15 +22,13 @@ function PanelModificar() {
   const [eliminar, setEliminar] = useState(false);
   
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
 
     useEffect (() => {
     
                        
                 if (dia != "" && horario != "") {
     
-                fetch(`${API_URL}/canchas_disponibles` , {
+                fetch(`/canchas_disponibles` , {
     
                     method : 'POST',
                     headers: {'Content-type' : 'application/json'},
@@ -56,7 +54,7 @@ function PanelModificar() {
 
 
   function buscarReserva() {
-    fetch(`${API_URL}/consultar_reserva`, {
+    fetch(`/consultar_reserva`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ dni }),
@@ -85,7 +83,7 @@ function PanelModificar() {
   }
 
   function guardarCambios() {
-    fetch(`${API_URL}/modificar_reserva`, {
+    fetch(`/modificar_reserva`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({

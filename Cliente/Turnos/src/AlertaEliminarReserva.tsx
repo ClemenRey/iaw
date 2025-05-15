@@ -1,4 +1,3 @@
-const API_URL = import.meta.env.VITE_API_URL;
 
 
 interface AlertaEliminarReservaProps {
@@ -12,7 +11,7 @@ function AlertaEliminarReserva({ documento, mostrarReserva, accionCancelar }: Al
 
 function confirmarEliminacion() {
 
-    fetch(`${API_URL}/eliminar_reserva`, {
+    fetch(`/eliminar_reserva`, {
 
         method : 'POST',
         headers: { "Content-type": "application/json" },

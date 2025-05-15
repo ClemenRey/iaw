@@ -3,8 +3,6 @@ import { useState } from "react";
 import AlertaConsultaReserva from './AlertaConsultaReserva'
 import './index.css';
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 
 function PanelConsultaReserva() {
 
@@ -16,7 +14,7 @@ function PanelConsultaReserva() {
 
         
         setDatos(null)
-        fetch(`${API_URL}/consultar_reserva` , {
+        fetch(`/consultar_reserva` , {
 
             method : 'POST',
             headers: {'Content-type' : 'application/json'},
