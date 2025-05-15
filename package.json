@@ -7,7 +7,7 @@
   "scripts": {
    
     "install:all": "npm install && cd Cliente && cd Turnos && npm install && cd ../../Servidor && npm install",
-    "build": "cd Cliente && cd Turnos && npm run build && cd ../../Servidor && npm run build",
+    "build": "cd Cliente && cd Turnos && npm run build",
     "start": "cd Servidor && npm start",
     "dev": "concurrently \"cd Cliente && cd Turnos && npm run dev\" \"cd Servidor && npm run dev\""
   },
