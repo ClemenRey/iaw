@@ -1,7 +1,7 @@
 
 {
 
-  "main": "dist/server.js",
+  "main": "servidor.js",
 
   "dependencies": {
     "cors": "^2.8.5",
