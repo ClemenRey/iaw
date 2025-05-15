@@ -20,7 +20,7 @@ let reservas = new Map();
 
 function horarioANumero(hora) {
 
-  let retornar = "";
+  let retornar;
 
     switch(hora) {
 
@@ -140,31 +140,33 @@ app.post('/modificar_reserva' , (req ,res) => {
 
 
 /*Endopoint para traer los horarios disponibles de la cancha seleccionada*/
-app.post('/canchas_disponibles' , (req,res) => {
+app.post('/canchas_disponibles', (req, res) => {
+  const dia = req.body.dia;
+  const horarioString = req.body.horario;
+  const horarioArreglo = horarioANumero(horarioString);
 
-    dia = req.body.dia; 
-    horarioString = req.body.horario;
-    horarioArrreglo = horarioANumero(horarioString);
-    
+  if (!dia || !horarioString) {
+    return res.status(400).json({ error: "Faltan parámetros 'dia' o 'horario'" });
+  }
 
-    if (!dia || !horarioString) {
-      return res.status(400).json({ error: "Faltan parámetros 'dia' o 'horario'" });
-    }
+  if (horarioArreglo === undefined || horarioArreglo < 0 || horarioArreglo >= 10) {
+    return res.status(400).json({ error: "Horario inválido" });
+  }
 
-    if(!fechas.has(dia)){
-        
-        let horarios = Array.from({length : 10} , () => [true,true,true]);
-        fechas.set(dia,horarios);
-        res.json(fechas.get(dia)[horarioArrreglo]);
-    }
-    else
-        { 
+  if (!fechas.has(dia)) {
+    const horarios = Array.from({ length: 10 }, () => [true, true, true]);
+    fechas.set(dia, horarios);
+  }
 
-          res.json(fechas.get(dia)[horarioArrreglo]); 
-          
-        }
+  const respuesta = fechas.get(dia)[horarioArreglo];
 
+  if (!respuesta) {
+    return res.status(500).json({ error: "No se pudo obtener la disponibilidad" });
+  }
+
+  return res.json(respuesta); // siempre devuelve algo
 });
+
 
 
 
