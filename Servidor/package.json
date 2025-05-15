@@ -12,7 +12,7 @@
     "dev": "nodemon",
     "test": "jest --watchAll",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node servidor.js"
   },
 
   "devDependencies": {
