@@ -1,8 +1,5 @@
 /*Servidor en Express que se encargará de responder las peticiones del frontend*/
 
-import path from 'path'
-
-
 const express = require('express');
 const app = express();
 const path = require('path');
