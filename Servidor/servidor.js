@@ -196,10 +196,10 @@ app.listen(PORT, () => {
 
 // In production, serve static files from the frontend build directory
 if (process.env.DEPLOY_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../Cliente/Turnos/dist')))
+  app.use(express.static(path.join(__dirname, '../Cliente/Turnos/dist')))
 
   // For all other routes, serve the index.html
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../Cliente/Turnos/dist/index.html'))
+    res.sendFile(path.join(__dirname, '../Cliente/Turnos/dist/index.html'))
   })
 }
