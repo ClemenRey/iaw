@@ -200,6 +200,6 @@ if (process.env.DEPLOY_ENV === 'production') {
 
   // For all other routes, serve the index.html
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../Cliente/Turnos/index.html'))
+    res.sendFile(path.join(__dirname, '../../Cliente/Turnos/dist/index.html'))
   })
 }
