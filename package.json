@@ -1,0 +1,18 @@
+{
+  
+  "name": "proyecto-1",
+  "version": "1.0.0",
+ 
+  "description": "Full-stack application with React frontend and Express backend",
+  "scripts": {
+   
+    "install:all": "npm install && cd Cliente && cd Turnos && npm install && cd ../../Servidor && npm install",
+    "build": "cd Cliente && cd Turnos && npm run build",
+    "start": "cd Servidor && npm run start",
+    "dev": "concurrently \"cd Cliente && cd Turnos && npm run dev\" \"cd Servidor && npm run dev\""
+  },
+ 
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

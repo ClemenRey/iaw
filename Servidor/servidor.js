@@ -1,6 +1,5 @@
 /*Servidor en Express que se encargará de responder las peticiones del frontend*/
 
-
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -40,6 +39,9 @@ function horarioANumero(hora) {
     return retornar;
 
 }
+
+
+
 
 /*Endpoint que responde a la reserva de un turno*/ 
 app.post('/reservar' , (req,res) => {
@@ -190,3 +192,14 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor ejecutándose en el puerto ${PORT}`);
 }); 
+
+
+// In production, serve static files from the frontend build directory
+if (process.env.DEPLOY_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../Cliente/Turnos/dist')))
+
+  // For all other routes, serve the index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../Cliente/Turnos/dist/index.html'))
+  })
+}

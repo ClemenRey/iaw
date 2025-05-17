@@ -1,5 +1,4 @@
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 interface AlertaEliminarReservaProps {
     documento: string;
@@ -12,7 +11,7 @@ function AlertaEliminarReserva({ documento, mostrarReserva, accionCancelar }: Al
 
 function confirmarEliminacion() {
 
-    fetch(`${API_URL}/eliminar_reserva`, {
+    fetch(`/eliminar_reserva`, {
 
         method : 'POST',
         headers: { "Content-type": "application/json" },
